@@ -9,12 +9,12 @@
 ---------------------------------------
 
 ---------------------------------------
---      laser_scalpel | Shared       --
+--   derman_regenerator  | Shared    --
 ---------------------------------------
 
 SWEP.Base = "oni_base"
 
-SWEP.PrintName = "autosuture"
+SWEP.PrintName = "Derman regenerator"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
@@ -23,7 +23,7 @@ SWEP.Slot = 3
 SWEP.SlotPos = 0
 
 SWEP.ViewModel = "models/weapons/v_pistol.mdl"
-SWEP.WorldModel = "models/crazycanadian/star_trek/tools/autosuture/autosuture.mdl"
+SWEP.WorldModel = "models/crazycanadian/star_trek/tools/dermal_regenerator/dermal_regenerator.mdl"
 
 SWEP.HoldType = "pistol"
 
@@ -58,49 +58,73 @@ SWEP.BoneManip = {
     },
 }
 
-SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/autosuture/autosuture.mdl"
+SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/dermal_regenerator/dermal_regenerator.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomViewModelOffset = Vector(5, -2, -2.5)
+SWEP.CustomViewModelOffset = Vector(4.4, -1.8, 0.3)
 SWEP.CustomViewModelAngle = Angle(-85, -10, -90)
-SWEP.CustomViewModelScale = 1
+SWEP.CustomViewModelScale = 0.6
 
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomWorldModelOffset = Vector(5, -2, -2.5)
+SWEP.CustomWorldModelOffset = Vector(4, -1.8, 0.3)
 SWEP.CustomWorldModelAngle = Angle(-80, -10, -90)
-SWEP.CustomWorldModelScale = 1
+SWEP.CustomWorldModelScale = 0.6
+
+SWEP.healSpeed = 2 -- Health points per second
+SWEP.minHeal = .75
+SWEP.maxHeal = 1
 
 SWEP.active = false
+SWEP.healDelay = 0
 
-
-sound.Add({
-    name = "star_trek.odn_scanner_loop",
-    channel = CHAN_AUTO,
-    volume = 1,
-    level = 70,
-    pitch = 100,
-    sound = "guusconl/startrek/tng_fed_engidevice_loop_02.wav",
-})
+-- sound.Add({
+--     name = "star_trek.odn_scanner_loop",
+--     channel = CHAN_AUTO,
+--     volume = 1,
+--     level = 70,
+--     pitch = 100,
+--     sound = "guusconl/startrek/tng_fed_engidevice_loop_02.wav",
+-- })
 
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNWString("bodyGroups", "00")
-
 end
 
-function SWEP:PrimaryAttack()
-    if not IsFirstTimePredicted() then return end
+function SWEP:Think()
+    local owner = self:GetOwner()
+    if not IsValid(owner) then return end
 
-    if self.active then
-        self:TurnOff()
+    if owner:KeyDown(IN_ATTACK) then
+        if not self.active then
+            self:TurnOn()
+        end
     else
-        self:TurnOn()
+        if self.active then
+            self:TurnOff()
+        end
+    end
+
+    if self.active and self.healDelay <= 0 then
+        local trace = owner:GetEyeTrace()
+        local ply = trace.Entity
+
+        if IsValid(ply) and ply:IsPlayer() and ply:Health() > self.minHeal * ply:GetMaxHealth() and ply:Health() < self.maxHeal * ply:GetMaxHealth() then
+            ply:SetHealth(ply:Health() + 1)
+        end
+
+        -- Reset the delay
+        self.healDelay = 1 / self.healSpeed
+    end
+
+    -- update the delay
+    if self.healDelay > 0 then
+        self.healDelay = self.healDelay - FrameTime()
     end
 end
 
 function SWEP:TurnOn()
     self.LoopId = self:StartLoopingSound("star_trek.laser_scalpel_loop")
-    self:SetNWString("bodyGroups", "01")
     self.active = true
 end
 
@@ -110,6 +134,5 @@ function SWEP:TurnOff()
         self:EmitSound("guusconl/startrek/tng_fed_laserscalpel_end.mp3")
         self.LoopId = nil
     end
-    self:SetNWString("bodyGroups", "00")
     self.active = false
 end
