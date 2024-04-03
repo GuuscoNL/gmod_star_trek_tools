@@ -9,7 +9,7 @@
 ---------------------------------------
 
 ---------------------------------------
---   derman_regenerator  | Server    --
+--   dermal_regenerator  | Server    --
 ---------------------------------------
 
 
@@ -21,20 +21,20 @@ function SWEP:OnRemove()
     self:TurnOff()
 end
 
-hook.Add("PlayerDroppedWeapon", "Star_Trek.tools.derman_regenerator_drop", function(ply, weapon)
-    if weapon:GetClass() == "derman_regenerator" then
+hook.Add("PlayerDroppedWeapon", "Star_Trek.tools.dermal_regenerator_drop", function(ply, weapon)
+    if weapon:GetClass() == "dermal_regenerator" then
         weapon:TurnOff()
     end
 end)
 
-hook.Add("PlayerCanPickupWeapon", "Star_Trek.tools.derman_regenerator_pickup", function(ply, weapon)
-    if weapon:GetClass() == "derman_regenerator" and ply:HasWeapon("autosuture") then
+hook.Add("PlayerCanPickupWeapon", "Star_Trek.tools.dermal_regenerator_pickup", function(ply, weapon)
+    if weapon:GetClass() == "dermal_regenerator" and ply:HasWeapon("dermal_regenerator") then
         return false
     end
 end)
 
-hook.Add( "PlayerSwitchWeapon", "Star_Trek.tools.derman_regenerator_switch", function( ply, oldWeapon, newWeapon )
-    if IsValid(oldWeapon) and oldWeapon:GetClass() == "derman_regenerator" then
+hook.Add( "PlayerSwitchWeapon", "Star_Trek.tools.dermal_regenerator_switch", function( ply, oldWeapon, newWeapon )
+    if IsValid(oldWeapon) and oldWeapon:GetClass() == "dermal_regenerator" then
         oldWeapon:TurnOff()
     end
 end )

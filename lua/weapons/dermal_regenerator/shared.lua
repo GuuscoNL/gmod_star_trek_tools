@@ -9,12 +9,12 @@
 ---------------------------------------
 
 ---------------------------------------
---   derman_regenerator  | Shared    --
+--   dermal_regenerator  | Shared    --
 ---------------------------------------
 
 SWEP.Base = "oni_base"
 
-SWEP.PrintName = "Derman regenerator"
+SWEP.PrintName = "Dermal regenerator"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
@@ -109,7 +109,7 @@ function SWEP:Think()
         local trace = owner:GetEyeTrace()
         local ply = trace.Entity
 
-        if IsValid(ply) and ply:IsPlayer() and ply:Health() > self.minHeal * ply:GetMaxHealth() and ply:Health() < self.maxHeal * ply:GetMaxHealth() then
+        if IsValid(ply) and ply:IsPlayer() and ply:Health() >= self.minHeal * ply:GetMaxHealth() and ply:Health() < self.maxHeal * ply:GetMaxHealth() then
             ply:SetHealth(ply:Health() + 1)
         end
 
