@@ -70,7 +70,12 @@ SWEP.CustomWorldModelOffset = Vector(5, -2, -2.5)
 SWEP.CustomWorldModelAngle = Angle(-80, -10, -90)
 SWEP.CustomWorldModelScale = 1
 
+SWEP.healSpeed = 4 -- Health points per second
+SWEP.minHeal = .20
+SWEP.maxHeal = .75
+
 SWEP.active = false
+SWEP.healDelay = 0
 
 
 sound.Add({
@@ -88,13 +93,35 @@ function SWEP:InitializeCustom()
 
 end
 
-function SWEP:PrimaryAttack()
-    if not IsFirstTimePredicted() then return end
+function SWEP:Think()
+    local owner = self:GetOwner()
+    if not IsValid(owner) then return end
 
-    if self.active then
-        self:TurnOff()
+    if owner:KeyDown(IN_ATTACK) then
+        if not self.active then
+            self:TurnOn()
+        end
     else
-        self:TurnOn()
+        if self.active then
+            self:TurnOff()
+        end
+    end
+
+    if self.active and self.healDelay <= 0 then
+        local trace = owner:GetEyeTrace()
+        local ply = trace.Entity
+
+        if IsValid(ply) and ply:IsPlayer() and ply:Health() >= self.minHeal * ply:GetMaxHealth() and ply:Health() < self.maxHeal * ply:GetMaxHealth() then
+            ply:SetHealth(ply:Health() + 1)
+        end
+
+        -- Reset the delay
+        self.healDelay = 1 / self.healSpeed
+    end
+
+    -- update the delay
+    if self.healDelay > 0 then
+        self.healDelay = self.healDelay - FrameTime()
     end
 end
 
