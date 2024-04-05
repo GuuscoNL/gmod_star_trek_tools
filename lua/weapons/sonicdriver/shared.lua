@@ -83,13 +83,14 @@ sound.Add({
 
 function SWEP:Initialize()
     self:SetDeploySpeed(20)
+    self:SetNW2Bool("scanning", false)
 end
 
 function SWEP:PrimaryAttack()
     if not IsFirstTimePredicted() then return end
     if not self.active then return end
 
-    if self.scanning then
+    if self:GetNW2Bool("scanning") then
         self:ScanOff()
     else
         self:ScanOn()
@@ -122,7 +123,7 @@ end
 function SWEP:ScanOn()
     self.LoopId = self:StartLoopingSound("star_trek.sonicdriver_loop")
     self:SetSkin(2)
-    self.scanning = true
+    self:SetNW2Bool("scanning", true)
 end
 
 function SWEP:ScanOff()
@@ -132,5 +133,5 @@ function SWEP:ScanOff()
         self.LoopId = nil
     end
     self:SetSkin(1)
-    self.scanning = false
+    self:SetNW2Bool("scanning", false)
 end

@@ -107,7 +107,6 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
 end
 
 
--- #TODO: make this look better?
 local SPRITE_MATERIAL = Material("sprites/light_glow02_add")
 local SPRITE_COLOUR = Color(110, 8, 8)
 
@@ -133,7 +132,8 @@ hook.Add("PostDrawOpaqueRenderables", "odn_scanner_draw_effects", function()
                 render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
             cam.End3D()
         end
-    else
+
+    else -- Third-person view
         for _, OtherPly in player.Iterator() do
 
             local wep = OtherPly:GetActiveWeapon()
