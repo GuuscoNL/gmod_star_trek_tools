@@ -67,7 +67,6 @@ SWEP.CustomWorldModelOffset = Vector(5, -2, -1.5)
 SWEP.CustomWorldModelAngle = Angle(-20, 180, 190)
 SWEP.CustomWorldModelScale = 1
 
-SWEP.active = false
 SWEP.LastTurnedOff = 0
 SWEP.delay = 1.7
 
@@ -82,12 +81,14 @@ sound.Add({
 
 function SWEP:Initialize()
     self:SetDeploySpeed(20)
+
+    self:SetNW2Bool("active", false)
 end
 
 function SWEP:PrimaryAttack()
     if not IsFirstTimePredicted() then return end
 
-    if self.active then
+    if self:GetNW2Bool("active") then
         self:TurnOff()
     else
         if self.LastTurnedOff + self.delay < CurTime() then
@@ -99,7 +100,7 @@ end
 function SWEP:TurnOn()
     self.LoopId = self:StartLoopingSound("star_trek.odn_scanner_loop")
     self:SetSkin(1)
-    self.active = true
+    self:SetNW2Bool("active", true)
 end
 
 function SWEP:TurnOff()
@@ -109,6 +110,6 @@ function SWEP:TurnOff()
         self.LoopId = nil
     end
     self:SetSkin(0)
-    self.active = false
+    self:SetNW2Bool("active", false)
     self.LastTurnedOff = CurTime()
 end
