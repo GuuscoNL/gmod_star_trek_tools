@@ -112,13 +112,10 @@ local SPRITE_COLOUR = Color(110, 8, 8)
 
 hook.Add("PostDrawOpaqueRenderables", "odn_scanner_draw_effects", function()
     local ply = LocalPlayer()
+    local wep = ply:GetActiveWeapon()
 
     -- Check if the player is in a first-person view
-    if not ply:ShouldDrawLocalPlayer() then
-        local wep = ply:GetActiveWeapon()
-        if not IsValid(wep) or not (wep:GetClass() == "odn_scanner" and wep:GetNW2Bool("active")) then
-            return
-        end
+    if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "odn_scanner" and wep:GetNW2Bool("active") then
 
         local vm = ply:GetViewModel()
 
@@ -132,24 +129,31 @@ hook.Add("PostDrawOpaqueRenderables", "odn_scanner_draw_effects", function()
                 render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
             cam.End3D()
         end
+    end
 
-    else -- Third-person view
-        for _, OtherPly in player.Iterator() do
+    for _, otherPly in player.Iterator() do
 
-            local wep = OtherPly:GetActiveWeapon()
+        local index1 = otherPly:EntIndex()
+        local index2 = ply:EntIndex()
 
-            if IsValid(wep) and wep:GetClass() == "odn_scanner" and wep:GetNW2Bool("active") then
-                local bone_matrix = OtherPly:GetBoneMatrix(OtherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
-                local offset = bone_matrix:GetTranslation()
+        if not ply:ShouldDrawLocalPlayer() and index1 == index2 then
+            continue
+        end
 
-                local offset1 = Vector(7.5, 2, -1)
-                offset1:Rotate(bone_matrix:GetAngles())
+        wep = otherPly:GetActiveWeapon()
 
-                cam.Start3D()
-                    render.SetMaterial(SPRITE_MATERIAL)
-                    render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
-                cam.End3D()
-            end
+        if IsValid(wep) and wep:GetClass() == "odn_scanner" and wep:GetNW2Bool("active") then
+            local bone_matrix = otherPly:GetBoneMatrix(otherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
+            local offset = bone_matrix:GetTranslation()
+
+            local offset1 = Vector(7.5, 2, -1)
+            offset1:Rotate(bone_matrix:GetAngles())
+
+            cam.Start3D()
+                render.SetMaterial(SPRITE_MATERIAL)
+                render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
+            cam.End3D()
         end
     end
+
 end)
