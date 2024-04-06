@@ -155,7 +155,10 @@ hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
 
     for _, otherPly in player.Iterator() do
 
-        if otherPly == ply then
+        local index1 = otherPly:EntIndex()
+        local index2 = ply:EntIndex()
+
+        if not ply:ShouldDrawLocalPlayer() and index1 == index2 then
             continue
         end
 
