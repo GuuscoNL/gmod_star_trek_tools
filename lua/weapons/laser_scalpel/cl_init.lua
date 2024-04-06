@@ -115,8 +115,8 @@ hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
     local ply = LocalPlayer()
 
     -- Check if the player is in a first-person view
-    if not ply:ShouldDrawLocalPlayer() then
-        local wep = ply:GetActiveWeapon()
+    local wep = ply:GetActiveWeapon()
+    if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active") then
         if not IsValid(wep) or not (wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active")) then
             return
         end
@@ -142,57 +142,60 @@ hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
                 if tr.Hit then
                     local pos = tr.HitPos - ply:GetAimVector() * 2
                     render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, pos, 1, 0, 1, BEAM_COLOUR)
+                    render.DrawBeam(startPos, pos, TimedSin(0.5, 0.8, 1.3, 0), 0, 0.5, BEAM_COLOUR)
                     render.SetMaterial(SPRITE_MATERIAL)
                     render.DrawSprite(pos, 10, 10, SPRITE_COLOUR)
                 else
                     render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, endPos, 1, 0, 1, BEAM_COLOUR)
+                    render.DrawBeam(startPos, endPos, TimedSin(0.5, 0.8, 1.3, 0), 0, 0.5, BEAM_COLOUR)
                 end
             cam.End3D()
         end
+    end
 
-    else -- Third-person view
-        for _, otherPly in player.Iterator() do
+    for _, otherPly in player.Iterator() do
 
-            local wep = otherPly:GetActiveWeapon()
+        if otherPly == ply then
+            continue
+        end
 
-            if IsValid(wep) and wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active") then
-                local bone_matrix = otherPly:GetBoneMatrix(otherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
-                if bone_matrix == nil then
-                    continue
-                end
+        wep = otherPly:GetActiveWeapon()
 
-                local offset = bone_matrix:GetTranslation()
-
-                local offset1 = Vector(5.6, 0.6, -4)
-                offset1:Rotate(bone_matrix:GetAngles())
-
-                local startPos = offset1 + offset
-                local temp = Vector(1, 0, 0)
-                temp:Rotate(bone_matrix:GetAngles() + Angle(-21, -25, 26))
-                local endPos = startPos + temp * 20
-
-                local tr = util.TraceLine({
-                    start = startPos,
-                    endpos = endPos,
-                })
-
-                cam.Start3D()
-                    render.SetMaterial(SPRITE_MATERIAL)
-                    render.DrawSprite(startPos, 10, 10, SPRITE_COLOUR)
-                    if tr.Hit then
-                        local pos = tr.HitPos - temp * 2
-                        render.SetMaterial(BEAM_MATERIAL)
-                        render.DrawBeam(startPos, pos, 1, 0, 1, BEAM_COLOUR)
-                        render.SetMaterial(SPRITE_MATERIAL)
-                        render.DrawSprite(pos, 10, 10, SPRITE_COLOUR)
-                    else
-                        render.SetMaterial(BEAM_MATERIAL)
-                        render.DrawBeam(startPos, endPos, 1, 0, 1, BEAM_COLOUR)
-                    end
-                cam.End3D()
+        if IsValid(wep) and wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active") then
+            local bone_matrix = otherPly:GetBoneMatrix(otherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
+            if bone_matrix == nil then
+                continue
             end
+
+            local offset = bone_matrix:GetTranslation()
+
+            local offset1 = Vector(5.6, 0.6, -4)
+            offset1:Rotate(bone_matrix:GetAngles())
+
+            local startPos = offset1 + offset
+            local temp = Vector(1, 0, 0)
+            temp:Rotate(bone_matrix:GetAngles() + Angle(-21, -25, 26))
+            local endPos = startPos + temp * 20
+
+            local tr = util.TraceLine({
+                start = startPos,
+                endpos = endPos,
+            })
+
+            cam.Start3D()
+                render.SetMaterial(SPRITE_MATERIAL)
+                render.DrawSprite(startPos, 10, 10, SPRITE_COLOUR)
+                if tr.Hit then
+                    local pos = tr.HitPos - temp * 2
+                    render.SetMaterial(BEAM_MATERIAL)
+                    render.DrawBeam(startPos, pos, TimedSin(0.5, 0.8, 1.3, 0), 0, 1, BEAM_COLOUR)
+                    render.SetMaterial(SPRITE_MATERIAL)
+                    render.DrawSprite(pos, 10, 10, SPRITE_COLOUR)
+                else
+                    render.SetMaterial(BEAM_MATERIAL)
+                    render.DrawBeam(startPos, endPos, TimedSin(0.5, 0.8, 1.3, 0), 0, 1, BEAM_COLOUR)
+                end
+            cam.End3D()
         end
     end
 end)
