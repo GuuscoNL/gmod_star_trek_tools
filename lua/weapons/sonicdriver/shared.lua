@@ -81,7 +81,7 @@ sound.Add({
     sound = "guusconl/startrek/tng_fed_engidevice_loop_01.wav",
 })
 
-function SWEP:Initialize()
+function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNW2Bool("scanning", false)
 end
