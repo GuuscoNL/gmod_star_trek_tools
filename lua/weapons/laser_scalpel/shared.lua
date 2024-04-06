@@ -61,7 +61,7 @@ SWEP.BoneManip = {
 SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/laser_scalpel/laser_scalpel.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector(4, -2, -0.5)
-SWEP.CustomViewModelAngle = Angle(-80, -10, -90)
+SWEP.CustomViewModelAngle = Angle(-85, -10, -90)
 SWEP.CustomViewModelScale = 1
 
 SWEP.CustomDrawWorldModel = true

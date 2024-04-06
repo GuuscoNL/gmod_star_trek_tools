@@ -125,7 +125,7 @@ hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
 
         if IsValid(vm) then
             local offset = vm:GetBonePosition(vm:LookupBone("ValveBiped.Bip01_R_Finger01"))
-            local offset1 = Vector(0, 1.5, 2)
+            local offset1 = Vector(-0.70, 1.7, 1.7)
             offset1:Rotate(ply:GetAngles())
             local startPos = offset1 + offset
             local endPos = startPos + ply:GetAimVector() * 40
@@ -133,6 +133,7 @@ hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
             local tr = util.TraceLine({
                 start = startPos,
                 endpos = endPos,
+                filter = ply,
             })
 
             cam.Start3D()
@@ -168,7 +169,9 @@ hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
                 offset1:Rotate(bone_matrix:GetAngles())
 
                 local startPos = offset1 + offset
-                local endPos = startPos + otherPly:GetAimVector() * 20
+                local temp = Vector(1, 0, 0)
+                temp:Rotate(bone_matrix:GetAngles() + Angle(-21, -25, 26))
+                local endPos = startPos + temp * 20
 
                 local tr = util.TraceLine({
                     start = startPos,
@@ -179,7 +182,7 @@ hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
                     render.SetMaterial(SPRITE_MATERIAL)
                     render.DrawSprite(startPos, 10, 10, SPRITE_COLOUR)
                     if tr.Hit then
-                        local pos = tr.HitPos - otherPly:GetAimVector() * 2
+                        local pos = tr.HitPos - temp * 2
                         render.SetMaterial(BEAM_MATERIAL)
                         render.DrawBeam(startPos, pos, 1, 0, 1, BEAM_COLOUR)
                         render.SetMaterial(SPRITE_MATERIAL)
