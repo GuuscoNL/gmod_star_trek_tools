@@ -62,13 +62,13 @@ SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/dermal_regenerator/
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector(4.4, -1.8, 0.3)
 SWEP.CustomViewModelAngle = Angle(-85, -10, -90)
-SWEP.CustomViewModelScale = 0.6
+SWEP.CustomViewModelScale = 1
 
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomWorldModelOffset = Vector(4, -1.8, 0.3)
 SWEP.CustomWorldModelAngle = Angle(-80, -10, -90)
-SWEP.CustomWorldModelScale = 0.6
+SWEP.CustomWorldModelScale = 1
 
 SWEP.healSpeed = 2 -- Health points per second
 SWEP.minHeal = .75

@@ -139,11 +139,11 @@ hook.Add("PostDrawOpaqueRenderables", "sonicdriver_draw_effects", function()
             continue
         end
 
-        local wep = OtherPly:GetActiveWeapon()
+        wep = OtherPly:GetActiveWeapon()
 
         if IsValid(wep) and wep:GetClass() == "sonicdriver" and wep:GetNW2Bool("scanning") then
             local bone_matrix = OtherPly:GetBoneMatrix(OtherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
-            
+
             if bone_matrix == nil then
                 continue
             end
