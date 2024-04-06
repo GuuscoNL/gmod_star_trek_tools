@@ -105,3 +105,91 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
         self:DrawViewModelCustom(flags)
     end
 end
+
+local SPRITE_MATERIAL = Material("sprites/light_glow02_add")
+local BEAM_MATERIAL = Material("sprites/rollermine_shock")
+local SPRITE_COLOUR = Color(110, 8, 8)
+local BEAM_COLOUR = Color(255, 0, 0)
+
+hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
+    local ply = LocalPlayer()
+
+    -- Check if the player is in a first-person view
+    if not ply:ShouldDrawLocalPlayer() then
+        local wep = ply:GetActiveWeapon()
+        if not IsValid(wep) or not (wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active")) then
+            return
+        end
+
+        local vm = ply:GetViewModel()
+
+        if IsValid(vm) then
+            local offset = vm:GetBonePosition(vm:LookupBone("ValveBiped.Bip01_R_Finger01"))
+            local offset1 = Vector(0, 1.5, 2)
+            offset1:Rotate(ply:GetAngles())
+            local startPos = offset1 + offset
+            local endPos = startPos + ply:GetAimVector() * 40
+
+            local tr = util.TraceLine({
+                start = startPos,
+                endpos = endPos,
+            })
+
+            cam.Start3D()
+                render.SetMaterial(SPRITE_MATERIAL)
+                render.DrawSprite(startPos, 10, 10, SPRITE_COLOUR)
+                if tr.Hit then
+                    local pos = tr.HitPos - ply:GetAimVector() * 2
+                    render.SetMaterial(BEAM_MATERIAL)
+                    render.DrawBeam(startPos, pos, 1, 0, 1, BEAM_COLOUR)
+                    render.SetMaterial(SPRITE_MATERIAL)
+                    render.DrawSprite(pos, 10, 10, SPRITE_COLOUR)
+                else
+                    render.SetMaterial(BEAM_MATERIAL)
+                    render.DrawBeam(startPos, endPos, 1, 0, 1, BEAM_COLOUR)
+                end
+            cam.End3D()
+        end
+
+    else -- Third-person view
+        for _, otherPly in player.Iterator() do
+
+            local wep = otherPly:GetActiveWeapon()
+
+            if IsValid(wep) and wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active") then
+                local bone_matrix = otherPly:GetBoneMatrix(otherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
+                if bone_matrix == nil then
+                    continue
+                end
+
+                local offset = bone_matrix:GetTranslation()
+
+                local offset1 = Vector(5.6, 0.6, -4)
+                offset1:Rotate(bone_matrix:GetAngles())
+
+                local startPos = offset1 + offset
+                local endPos = startPos + otherPly:GetAimVector() * 20
+
+                local tr = util.TraceLine({
+                    start = startPos,
+                    endpos = endPos,
+                })
+
+                cam.Start3D()
+                    render.SetMaterial(SPRITE_MATERIAL)
+                    render.DrawSprite(startPos, 10, 10, SPRITE_COLOUR)
+                    if tr.Hit then
+                        local pos = tr.HitPos - otherPly:GetAimVector() * 2
+                        render.SetMaterial(BEAM_MATERIAL)
+                        render.DrawBeam(startPos, pos, 1, 0, 1, BEAM_COLOUR)
+                        render.SetMaterial(SPRITE_MATERIAL)
+                        render.DrawSprite(pos, 10, 10, SPRITE_COLOUR)
+                    else
+                        render.SetMaterial(BEAM_MATERIAL)
+                        render.DrawBeam(startPos, endPos, 1, 0, 1, BEAM_COLOUR)
+                    end
+                cam.End3D()
+            end
+        end
+    end
+end)

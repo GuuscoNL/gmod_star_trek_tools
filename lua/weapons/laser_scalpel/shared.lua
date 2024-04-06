@@ -25,7 +25,7 @@ SWEP.SlotPos = 0
 SWEP.ViewModel = "models/weapons/v_pistol.mdl"
 SWEP.WorldModel = "models/crazycanadian/star_trek/tools/laser_scalpel/laser_scalpel.mdl"
 
-SWEP.HoldType = "pistol"
+SWEP.HoldType = "revolver"
 
 SWEP.BoneManip = {
     ["ValveBiped.clip"] = {
@@ -66,8 +66,8 @@ SWEP.CustomViewModelScale = 1
 
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomWorldModelOffset = Vector(5, -2, -1.5)
-SWEP.CustomWorldModelAngle = Angle(-80, -10, -90)
+SWEP.CustomWorldModelOffset = Vector(4, -2, -0.5)
+SWEP.CustomWorldModelAngle = Angle(-65, 0, -90)
 SWEP.CustomWorldModelScale = 1
 
 SWEP.active = false
@@ -84,12 +84,13 @@ sound.Add({
 
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
+    self:SetNW2Bool("active", false)
 end
 
 function SWEP:PrimaryAttack()
     if not IsFirstTimePredicted() then return end
 
-    if self.active then
+    if self:GetNW2Bool("active") then
         self:TurnOff()
     else
         self:TurnOn()
@@ -99,7 +100,7 @@ end
 function SWEP:TurnOn()
     self.LoopId = self:StartLoopingSound("star_trek.laser_scalpel_loop")
     self:SetNWString("bodyGroups", "01")
-    self.active = true
+    self:SetNW2Bool("active", true)
 end
 
 function SWEP:TurnOff()
@@ -109,5 +110,5 @@ function SWEP:TurnOff()
         self.LoopId = nil
     end
     self:SetNWString("bodyGroups", "00")
-    self.active = false
+    self:SetNW2Bool("active", false)
 end
