@@ -111,6 +111,11 @@ local BEAM_MATERIAL = Material("sprites/rollermine_shock")
 local SPRITE_COLOUR = Color(110, 8, 8)
 local BEAM_COLOUR = Color(255, 0, 0)
 
+local lastDecal = 0
+local decalDelay = 0.1
+local decalSize = 0.1
+
+-- #TODO: Refactor this?
 hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
     local ply = LocalPlayer()
 
@@ -136,18 +141,30 @@ hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
                 filter = ply,
             })
 
+            local spriteWidth = math.random(8, 12)
+            local beamWidth = math.Rand(0.7, 1.4)
+
             cam.Start3D()
                 render.SetMaterial(SPRITE_MATERIAL)
-                render.DrawSprite(startPos, 10, 10, SPRITE_COLOUR)
+                render.DrawSprite(startPos, spriteWidth, spriteWidth, SPRITE_COLOUR)
                 if tr.Hit then
                     local pos = tr.HitPos - ply:GetAimVector() * 2
                     render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, pos, TimedSin(0.5, 0.8, 1.3, 0), 0, 0.5, BEAM_COLOUR)
+                    render.DrawBeam(startPos, pos, beamWidth, 0, 0.5, BEAM_COLOUR)
                     render.SetMaterial(SPRITE_MATERIAL)
-                    render.DrawSprite(pos, 10, 10, SPRITE_COLOUR)
+                    render.DrawSprite(pos, spriteWidth, spriteWidth, SPRITE_COLOUR)
+                    if lastDecal < CurTime() then
+                        lastDecal = CurTime() + decalDelay
+                        local ent = tr.Entity
+                        if IsValid(ent) and (ent:IsNPC() or ent:IsPlayer()) then
+                            util.DecalEx(Material(util.DecalMaterial("Impact.Flesh")), ent, tr.HitPos, tr.HitNormal, Color(0, 0, 0), decalSize, decalSize)
+                        else
+                            util.DecalEx(Material(util.DecalMaterial("FadingScorch")), ent, tr.HitPos, tr.HitNormal, Color(0, 0, 0), decalSize, decalSize)
+                        end
+                    end
                 else
                     render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, endPos, TimedSin(0.5, 0.8, 1.3, 0), 0, 0.5, BEAM_COLOUR)
+                    render.DrawBeam(startPos, endPos, beamWidth, 0, 0.5, BEAM_COLOUR)
                 end
             cam.End3D()
         end
@@ -185,18 +202,31 @@ hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
                 endpos = endPos,
             })
 
+            local spriteWidth = math.random(8, 12)
+            local beamWidth = math.Rand(0.7, 1.4)
+
+
             cam.Start3D()
                 render.SetMaterial(SPRITE_MATERIAL)
-                render.DrawSprite(startPos, 10, 10, SPRITE_COLOUR)
+                render.DrawSprite(startPos, spriteWidth, spriteWidth, SPRITE_COLOUR)
                 if tr.Hit then
                     local pos = tr.HitPos - temp * 2
                     render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, pos, TimedSin(0.5, 0.8, 1.3, 0), 0, 1, BEAM_COLOUR)
+                    render.DrawBeam(startPos, pos, beamWidth, 0, 1, BEAM_COLOUR)
                     render.SetMaterial(SPRITE_MATERIAL)
-                    render.DrawSprite(pos, 10, 10, SPRITE_COLOUR)
+                    render.DrawSprite(pos, spriteWidth, spriteWidth, SPRITE_COLOUR)
+                    if lastDecal < CurTime() then
+                        lastDecal = CurTime() + decalDelay
+                        local ent = tr.Entity
+                        if IsValid(ent) and (ent:IsNPC() or ent:IsPlayer()) then
+                            util.DecalEx(Material(util.DecalMaterial("Impact.Flesh")), ent, tr.HitPos, tr.HitNormal, Color(0, 0, 0), decalSize, decalSize)
+                        else
+                            util.DecalEx(Material(util.DecalMaterial("FadingScorch")), ent, tr.HitPos, tr.HitNormal, Color(0, 0, 0), decalSize, decalSize)
+                        end
+                    end
                 else
                     render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, endPos, TimedSin(0.5, 0.8, 1.3, 0), 0, 1, BEAM_COLOUR)
+                    render.DrawBeam(startPos, endPos, beamWidth, 0, 1, BEAM_COLOUR)
                 end
             cam.End3D()
         end
