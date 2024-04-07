@@ -106,129 +106,122 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
     end
 end
 
+hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
+
+    handleBeamFPS()
+
+    local ply = LocalPlayer()
+    for _, otherPly in player.Iterator() do
+
+        -- if ply is local player and ply is in first person view, skip
+        if not ply:ShouldDrawLocalPlayer() and otherPly:EntIndex() == ply:EntIndex() then
+            continue
+        end
+
+        handleBeam3rd(otherPly)
+    end
+end)
+
+function handleBeamFPS()
+    local ply = LocalPlayer()
+    local wep = ply:GetActiveWeapon()
+
+    -- Check if the player is in a first-person view
+    if ply:ShouldDrawLocalPlayer() then
+        return
+    end
+
+    if not IsValid(wep) or not (wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active")) then
+        return
+    end
+
+    local vm = ply:GetViewModel()
+
+    if IsValid(vm) then
+        local offset = vm:GetBonePosition(vm:LookupBone("ValveBiped.Bip01_R_Finger01"))
+        local offset1 = Vector(-0.70, 1.7, 1.7)
+        offset1:Rotate(ply:GetAngles())
+        local startPos = offset1 + offset
+        local endPos = startPos + ply:GetAimVector() * 30
+
+        renderBeam(startPos, endPos, ply:GetAimVector(), ply)
+    end
+end
+
+function handleBeam3rd(otherPly)
+    local wep = otherPly:GetActiveWeapon()
+
+    if not IsValid(wep) or not wep:GetClass() == "laser_scalpel" or not wep:GetNW2Bool("active") then
+        return
+    end
+
+    local bone_matrix = otherPly:GetBoneMatrix(otherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
+    if bone_matrix == nil then
+        return
+    end
+
+    local offset = bone_matrix:GetTranslation()
+
+    local offset1 = Vector(5.6, 0.6, -4)
+    offset1:Rotate(bone_matrix:GetAngles())
+
+    local startPos = offset1 + offset
+
+    -- #BUG: The direction is not correct
+    local direction = Vector(1, 0, 0)
+    local temp = bone_matrix:GetForward()
+    -- temp:Rotate(Angle(-21, -25, 26))
+
+    local endPos = startPos + temp * 20
+
+    renderBeam(startPos, endPos, direction, ply)
+end
+
 local SPRITE_MATERIAL = Material("sprites/light_glow02_add")
 local BEAM_MATERIAL = Material("sprites/rollermine_shock")
 local SPRITE_COLOUR = Color(110, 8, 8)
 local BEAM_COLOUR = Color(255, 0, 0)
 
+local FLESH_DECAL = Material(util.DecalMaterial("Impact.Flesh"))
+local SCORCH_DECAL = Material(util.DecalMaterial("FadingScorch"))
+local DECAL_COLOUR = Color(0, 0, 0)
+local DECAL_SIZE = 0.1
+local DECAL_DELAY = 0.08
+
 local lastDecal = 0
-local decalDelay = 0.1
-local decalSize = 0.1
 
--- #TODO: Refactor this?
-hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
-    local ply = LocalPlayer()
+function renderBeam(startPos, endPos, direction, filter)
 
-    -- Check if the player is in a first-person view
-    local wep = ply:GetActiveWeapon()
-    if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active") then
-        if not IsValid(wep) or not (wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active")) then
-            return
-        end
+    local tr = util.TraceLine({
+        start = startPos,
+        endpos = endPos,
+        filter = filter,
+    })
 
-        local vm = ply:GetViewModel()
+    local spriteWidth = math.random(8, 12)
+    local beamWidth = math.Rand(0.7, 1.4)
 
-        if IsValid(vm) then
-            local offset = vm:GetBonePosition(vm:LookupBone("ValveBiped.Bip01_R_Finger01"))
-            local offset1 = Vector(-0.70, 1.7, 1.7)
-            offset1:Rotate(ply:GetAngles())
-            local startPos = offset1 + offset
-            local endPos = startPos + ply:GetAimVector() * 40
-
-            local tr = util.TraceLine({
-                start = startPos,
-                endpos = endPos,
-                filter = ply,
-            })
-
-            local spriteWidth = math.random(8, 12)
-            local beamWidth = math.Rand(0.7, 1.4)
-
-            cam.Start3D()
-                render.SetMaterial(SPRITE_MATERIAL)
-                render.DrawSprite(startPos, spriteWidth, spriteWidth, SPRITE_COLOUR)
-                if tr.Hit then
-                    local pos = tr.HitPos - ply:GetAimVector() * 2
-                    render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, pos, beamWidth, 0, 0.5, BEAM_COLOUR)
-                    render.SetMaterial(SPRITE_MATERIAL)
-                    render.DrawSprite(pos, spriteWidth, spriteWidth, SPRITE_COLOUR)
-                    if lastDecal < CurTime() then
-                        lastDecal = CurTime() + decalDelay
-                        local ent = tr.Entity
-                        if IsValid(ent) and (ent:IsNPC() or ent:IsPlayer()) then
-                            util.DecalEx(Material(util.DecalMaterial("Impact.Flesh")), ent, tr.HitPos, tr.HitNormal, Color(0, 0, 0), decalSize, decalSize)
-                        else
-                            util.DecalEx(Material(util.DecalMaterial("FadingScorch")), ent, tr.HitPos, tr.HitNormal, Color(0, 0, 0), decalSize, decalSize)
-                        end
-                    end
+    cam.Start3D()
+        render.SetMaterial(SPRITE_MATERIAL)
+        render.DrawSprite(startPos, spriteWidth, spriteWidth, SPRITE_COLOUR)
+        if tr.Hit then
+            local pos = tr.HitPos - direction * 2
+            render.SetMaterial(BEAM_MATERIAL)
+            render.DrawBeam(startPos, pos, beamWidth, 0, 1, BEAM_COLOUR)
+            render.SetMaterial(SPRITE_MATERIAL)
+            render.DrawSprite(pos, spriteWidth, spriteWidth, SPRITE_COLOUR)
+            if lastDecal < CurTime() then
+                lastDecal = CurTime() + DECAL_DELAY
+                local ent = tr.Entity
+                if IsValid(ent) and (ent:IsNPC() or ent:IsPlayer()) then
+                    util.DecalEx(FLESH_DECAL, ent, tr.HitPos, tr.HitNormal, DECAL_COLOUR, DECAL_SIZE, DECAL_SIZE)
                 else
-                    render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, endPos, beamWidth, 0, 0.5, BEAM_COLOUR)
+                    util.DecalEx(SCORCH_DECAL, ent, tr.HitPos, tr.HitNormal, DECAL_COLOUR, DECAL_SIZE, DECAL_SIZE)
                 end
-            cam.End3D()
-        end
-    end
-
-    for _, otherPly in player.Iterator() do
-
-        local index1 = otherPly:EntIndex()
-        local index2 = ply:EntIndex()
-
-        if not ply:ShouldDrawLocalPlayer() and index1 == index2 then
-            continue
-        end
-
-        wep = otherPly:GetActiveWeapon()
-
-        if IsValid(wep) and wep:GetClass() == "laser_scalpel" and wep:GetNW2Bool("active") then
-            local bone_matrix = otherPly:GetBoneMatrix(otherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
-            if bone_matrix == nil then
-                continue
             end
-
-            local offset = bone_matrix:GetTranslation()
-
-            local offset1 = Vector(5.6, 0.6, -4)
-            offset1:Rotate(bone_matrix:GetAngles())
-
-            local startPos = offset1 + offset
-            local temp = Vector(1, 0, 0)
-            temp:Rotate(bone_matrix:GetAngles() + Angle(-21, -25, 26))
-            local endPos = startPos + temp * 20
-
-            local tr = util.TraceLine({
-                start = startPos,
-                endpos = endPos,
-            })
-
-            local spriteWidth = math.random(8, 12)
-            local beamWidth = math.Rand(0.7, 1.4)
-
-
-            cam.Start3D()
-                render.SetMaterial(SPRITE_MATERIAL)
-                render.DrawSprite(startPos, spriteWidth, spriteWidth, SPRITE_COLOUR)
-                if tr.Hit then
-                    local pos = tr.HitPos - temp * 2
-                    render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, pos, beamWidth, 0, 1, BEAM_COLOUR)
-                    render.SetMaterial(SPRITE_MATERIAL)
-                    render.DrawSprite(pos, spriteWidth, spriteWidth, SPRITE_COLOUR)
-                    if lastDecal < CurTime() then
-                        lastDecal = CurTime() + decalDelay
-                        local ent = tr.Entity
-                        if IsValid(ent) and (ent:IsNPC() or ent:IsPlayer()) then
-                            util.DecalEx(Material(util.DecalMaterial("Impact.Flesh")), ent, tr.HitPos, tr.HitNormal, Color(0, 0, 0), decalSize, decalSize)
-                        else
-                            util.DecalEx(Material(util.DecalMaterial("FadingScorch")), ent, tr.HitPos, tr.HitNormal, Color(0, 0, 0), decalSize, decalSize)
-                        end
-                    end
-                else
-                    render.SetMaterial(BEAM_MATERIAL)
-                    render.DrawBeam(startPos, endPos, beamWidth, 0, 1, BEAM_COLOUR)
-                end
-            cam.End3D()
+        else
+            render.SetMaterial(BEAM_MATERIAL)
+            render.DrawBeam(startPos, endPos, beamWidth, 0, 1, BEAM_COLOUR)
         end
-    end
-end)
+    cam.End3D()
+end
