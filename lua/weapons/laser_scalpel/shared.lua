@@ -73,15 +73,6 @@ SWEP.CustomWorldModelScale = 1
 SWEP.active = false
 
 
-sound.Add({
-    name = "star_trek.laser_scalpel_loop",
-    channel = CHAN_AUTO,
-    volume = 1,
-    level = 70,
-    pitch = 100,
-    sound = "guusconl/startrek/tng_fed_laserscalpel_loop.wav",
-})
-
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNW2Bool("active", false)

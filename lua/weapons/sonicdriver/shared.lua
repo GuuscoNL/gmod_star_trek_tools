@@ -71,16 +71,6 @@ SWEP.active = false
 SWEP.scanning = false
 SWEP.lastReload = 0
 
-
-sound.Add({
-    name = "star_trek.sonicdriver_loop",
-    channel = CHAN_AUTO,
-    volume = 1,
-    level = 70,
-    pitch = 100,
-    sound = "guusconl/startrek/tng_fed_engidevice_loop_01.wav",
-})
-
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNW2Bool("scanning", false)

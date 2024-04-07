@@ -20,3 +20,31 @@ sound.Add({
     pitch = 100,
     sound = "guusconl/startrek/tng_fed_beep_04.mp3",
 })
+
+sound.Add({
+    name = "star_trek.odn_scanner_loop",
+    channel = CHAN_AUTO,
+    volume = 1,
+    level = 70,
+    pitch = 100,
+    sound = "guusconl/startrek/tng_fed_engidevice_loop_02.wav",
+})
+
+
+sound.Add({
+    name = "star_trek.laser_scalpel_loop",
+    channel = CHAN_AUTO,
+    volume = 1,
+    level = 70,
+    pitch = 100,
+    sound = "guusconl/startrek/tng_fed_laserscalpel_loop.wav",
+})
+
+sound.Add({
+    name = "star_trek.sonicdriver_loop",
+    channel = CHAN_AUTO,
+    volume = 1,
+    level = 70,
+    pitch = 100,
+    sound = "guusconl/startrek/tng_fed_engidevice_loop_01.wav",
+})

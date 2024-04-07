@@ -70,15 +70,6 @@ SWEP.CustomWorldModelScale = 1
 SWEP.LastTurnedOff = 0
 SWEP.delay = 1.7
 
-sound.Add({
-    name = "star_trek.odn_scanner_loop",
-    channel = CHAN_AUTO,
-    volume = 1,
-    level = 70,
-    pitch = 100,
-    sound = "guusconl/startrek/tng_fed_engidevice_loop_02.wav",
-})
-
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
 

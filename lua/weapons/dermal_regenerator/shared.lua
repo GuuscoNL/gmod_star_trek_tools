@@ -77,15 +77,6 @@ SWEP.maxHeal = 1
 SWEP.active = false
 SWEP.healDelay = 0
 
--- sound.Add({
---     name = "star_trek.odn_scanner_loop",
---     channel = CHAN_AUTO,
---     volume = 1,
---     level = 70,
---     pitch = 100,
---     sound = "guusconl/startrek/tng_fed_engidevice_loop_02.wav",
--- })
-
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNWString("bodyGroups", "00")
