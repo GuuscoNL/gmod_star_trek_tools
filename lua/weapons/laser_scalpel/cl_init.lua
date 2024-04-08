@@ -144,7 +144,7 @@ function handleBeamFPS()
         local startPos = offset1 + offset
         local endPos = startPos + ply:GetAimVector() * 30
 
-        renderBeam(startPos, endPos, ply:GetAimVector(), ply)
+        renderBeam(startPos, endPos, ply)
     end
 end
 
@@ -167,14 +167,13 @@ function handleBeam3rd(otherPly)
 
     local startPos = offset1 + offset
 
-    -- #BUG: The direction is not correct
     local direction = Vector(1, 0, 0)
-    local temp = bone_matrix:GetForward()
-    -- temp:Rotate(Angle(-21, -25, 26))
+    direction:Rotate(Angle(30, 13, 20))
+    direction:Rotate(bone_matrix:GetAngles())
 
-    local endPos = startPos + temp * 20
+    local endPos = startPos + direction * 20
 
-    renderBeam(startPos, endPos, direction, ply)
+    renderBeam(startPos, endPos, ply)
 end
 
 local SPRITE_MATERIAL = Material("sprites/light_glow02_add")
@@ -190,7 +189,7 @@ local DECAL_DELAY = 0.08
 
 local lastDecal = 0
 
-function renderBeam(startPos, endPos, direction, filter)
+function renderBeam(startPos, endPos, filter)
 
     local tr = util.TraceLine({
         start = startPos,
@@ -205,11 +204,11 @@ function renderBeam(startPos, endPos, direction, filter)
         render.SetMaterial(SPRITE_MATERIAL)
         render.DrawSprite(startPos, spriteWidth, spriteWidth, SPRITE_COLOUR)
         if tr.Hit then
-            local pos = tr.HitPos - direction * 2
+            local pos = tr.HitPos
             render.SetMaterial(BEAM_MATERIAL)
             render.DrawBeam(startPos, pos, beamWidth, 0, 1, BEAM_COLOUR)
             render.SetMaterial(SPRITE_MATERIAL)
-            render.DrawSprite(pos, spriteWidth, spriteWidth, SPRITE_COLOUR)
+            render.DrawSprite(pos + tr.HitNormal * 0.2, spriteWidth, spriteWidth, SPRITE_COLOUR)
             if lastDecal < CurTime() then
                 lastDecal = CurTime() + DECAL_DELAY
                 local ent = tr.Entity
