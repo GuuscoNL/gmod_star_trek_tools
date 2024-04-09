@@ -101,6 +101,8 @@ function SWEP:Think()
         local trace = owner:GetEyeTrace()
         local ply = trace.Entity
 
+        if owner:GetPos():DistToSqr(ply:GetPos()) > 75 * 75 then return end
+
         if ply:Health() < self.minHeal * ply:GetMaxHealth() or ply:Health() > self.maxHeal * ply:GetMaxHealth() then
             self:EmitSound("star_trek.healed")
         else
