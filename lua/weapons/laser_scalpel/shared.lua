@@ -70,7 +70,27 @@ SWEP.CustomWorldModelOffset = Vector(4, -2, -0.5)
 SWEP.CustomWorldModelAngle = Angle(-65, 0, -90)
 SWEP.CustomWorldModelScale = 1
 
+
+SWEP.SPRITE_MATERIAL = Material("sprites/light_glow02_add")
+SWEP.BEAM_MATERIAL = Material("sprites/rollermine_shock")
 SWEP.active = false
+
+SWEP.SPRITE_COLOUR = Color(110, 8, 8)
+SWEP.BEAM_COLOUR = Color(255, 0, 0)
+
+SWEP.MIN_BEAM_WIDTH = 0.7
+SWEP.MAX_BEAM_WIDTH = 1.4
+
+SWEP.MIN_SPRITE_SIZE = 8
+SWEP.MAX_SPRITE_SIZE = 12
+
+SWEP.FLESH_DECAL = Material(util.DecalMaterial("Impact.Flesh"))
+SWEP.SCORCH_DECAL = Material(util.DecalMaterial("FadingScorch"))
+SWEP.DECAL_COLOUR = Color(0, 0, 0)
+SWEP.DECAL_SIZE = 0.1
+SWEP.DECAL_DELAY = 0.08
+
+SWEP.lastDecal = 0
 
 
 function SWEP:InitializeCustom()

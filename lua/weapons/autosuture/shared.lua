@@ -50,11 +50,11 @@ SWEP.BoneManip = {
         Ang = Angle(0, -40, 0)
     },
     ["ValveBiped.Bip01_R_Forearm"] = {
-        Pos = Vector(-10, 0, 0),
+        Pos = Vector(-5, 0, 0),
     },
     ["ValveBiped.Bip01_R_Clavicle"] = {
         Pos = Vector(-1, 0, 0),
-        Ang = Angle(0, 0, 15)
+        Ang = Angle(0, 0, 7)
     },
 }
 
