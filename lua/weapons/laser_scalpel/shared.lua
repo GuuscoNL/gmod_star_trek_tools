@@ -93,9 +93,10 @@ SWEP.BEAM_3RD_ANGLE = Angle(7, 0, 0)
 SWEP.BEAM_3RD_LENGTH = 20
 
 SWEP.FLESH_DECAL = Material(util.DecalMaterial("Impact.Flesh"))
+SWEP.FLESH_DECAL_SIZE = 0.2
 SWEP.SCORCH_DECAL = Material(util.DecalMaterial("FadingScorch"))
+SWEP.SCORCH_DECAL_SIZE = 0.1
 SWEP.DECAL_COLOUR = Color(0, 0, 0)
-SWEP.DECAL_SIZE = 0.1
 SWEP.DECAL_DELAY = 0.08
 
 SWEP.lastDecal = 0

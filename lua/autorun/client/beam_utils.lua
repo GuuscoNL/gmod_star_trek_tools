@@ -121,9 +121,9 @@ function renderBeam(startPos, endPos, filter, wep)
                 local ent = tr.Entity
 
                 if IsValid(ent) and (ent:IsNPC() or ent:IsPlayer()) then
-                    util.DecalEx(wep.FLESH_DECAL, ent, tr.HitPos, tr.HitNormal, wep.DECAL_COLOUR, wep.DECAL_SIZE, wep.DECAL_SIZE)
+                    util.DecalEx(wep.FLESH_DECAL, ent, tr.HitPos, tr.HitNormal, wep.DECAL_COLOUR, wep.FLESH_DECAL_SIZE, wep.FLESH_DECAL_SIZE)
                 else
-                    util.DecalEx(wep.SCORCH_DECAL, ent, tr.HitPos, tr.HitNormal, wep.DECAL_COLOUR, wep.DECAL_SIZE, wep.DECAL_SIZE)
+                    util.DecalEx(wep.SCORCH_DECAL, ent, tr.HitPos, tr.HitNormal, wep.DECAL_COLOUR, wep.SCORCH_DECAL_SIZE, wep.SCORCH_DECAL_SIZE)
                 end
             end
         else
