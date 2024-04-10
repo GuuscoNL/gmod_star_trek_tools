@@ -50,11 +50,11 @@ SWEP.BoneManip = {
         Ang = Angle(0, -20, 30)
     },
     ["ValveBiped.Bip01_R_Forearm"] = {
-        Pos = Vector(-10, 0, 0),
+        Pos = Vector(-3, 1, 0),
     },
     ["ValveBiped.Bip01_R_Clavicle"] = {
         Pos = Vector(-1, 0, 0),
-        Ang = Angle(0, 0, 15)
+        Ang = Angle(5, 0, 15)
     },
 }
 
@@ -66,7 +66,7 @@ SWEP.CustomViewModelScale = 1
 
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomWorldModelOffset = Vector(4, -2, -0.5)
+SWEP.CustomWorldModelOffset = Vector(4, -1.5, -0.5)
 SWEP.CustomWorldModelAngle = Angle(-65, 0, -90)
 SWEP.CustomWorldModelScale = 1
 
@@ -83,6 +83,14 @@ SWEP.MAX_BEAM_WIDTH = 1.4
 
 SWEP.MIN_SPRITE_SIZE = 8
 SWEP.MAX_SPRITE_SIZE = 12
+
+SWEP.BEAM_FPS_START_OFFSET = Vector(0, 3.3, 4)
+SWEP.BEAM_FPS_ANGLE = Angle(-14, -5, 0)
+SWEP.BEAM_FPS_LENGTH = 30
+
+SWEP.BEAM_3RD_START_OFFSET = Vector(9, -1.5, -3.3)
+SWEP.BEAM_3RD_ANGLE = Angle(7, 0, 0)
+SWEP.BEAM_3RD_LENGTH = 20
 
 SWEP.FLESH_DECAL = Material(util.DecalMaterial("Impact.Flesh"))
 SWEP.SCORCH_DECAL = Material(util.DecalMaterial("FadingScorch"))

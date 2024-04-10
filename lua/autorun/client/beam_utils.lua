@@ -43,11 +43,21 @@ function handleBeamFPS(className)
     local vm = ply:GetViewModel()
 
     if IsValid(vm) then
-        local offset = vm:GetBonePosition(vm:LookupBone("ValveBiped.Bip01_R_Finger01"))
-        local offset1 = Vector(-0.70, 1.7, 1.7)
-        offset1:Rotate(ply:GetAngles())
-        local startPos = offset1 + offset
-        local endPos = startPos + ply:GetAimVector() * 30
+        local bonePos = vm:GetBonePosition(vm:LookupBone(wep.CustomViewModelBone))
+        local offset = Vector()
+
+        offset:Set(wep.BEAM_FPS_START_OFFSET)
+        offset:Rotate(ply:GetAngles())
+        local startPos = bonePos + offset
+
+        local boneMatrix = vm:GetBoneMatrix(vm:LookupBone(wep.CustomViewModelBone))
+        if boneMatrix == nil then
+            return
+        end
+        local direction = Vector(1, 0, 0)
+        direction:Rotate(wep.BEAM_FPS_ANGLE)
+        direction:Rotate(boneMatrix:GetAngles())
+        local endPos = startPos + direction * wep.BEAM_FPS_LENGTH
 
         renderBeam(startPos, endPos, ply, wep)
     end
@@ -60,23 +70,24 @@ function handleBeam3rd(className, otherPly)
         return
     end
 
-    local bone_matrix = otherPly:GetBoneMatrix(otherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
-    if bone_matrix == nil then
+    local boneMatrix = otherPly:GetBoneMatrix(otherPly:LookupBone(wep.CustomWorldModelBone))
+    if boneMatrix == nil then
         return
     end
 
-    local offset = bone_matrix:GetTranslation()
+    local bonePos = boneMatrix:GetTranslation()
 
-    local offset1 = Vector(5.6, 0.6, -4)
-    offset1:Rotate(bone_matrix:GetAngles())
+    local offset = Vector()
+    offset:Set(wep.BEAM_3RD_START_OFFSET)
+    offset:Rotate(boneMatrix:GetAngles())
 
-    local startPos = offset1 + offset
+    local startPos = bonePos + offset
 
     local direction = Vector(1, 0, 0)
-    direction:Rotate(Angle(30, 13, 20))
-    direction:Rotate(bone_matrix:GetAngles())
+    direction:Rotate(wep.BEAM_3RD_ANGLE)
+    direction:Rotate(boneMatrix:GetAngles())
 
-    local endPos = startPos + direction * 20
+    local endPos = startPos + direction * wep.BEAM_3RD_LENGTH
 
     renderBeam(startPos, endPos, ply, wep)
 end
