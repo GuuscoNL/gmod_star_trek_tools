@@ -132,5 +132,3 @@ function renderBeam(startPos, endPos, filter, wep)
         end
     cam.End3D()
 end
-
-print("Loaded")

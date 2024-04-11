@@ -92,9 +92,9 @@ SWEP.BEAM_3RD_START_OFFSET = Vector(9, -1.5, -3.3)
 SWEP.BEAM_3RD_ANGLE = Angle(7, 0, 0)
 SWEP.BEAM_3RD_LENGTH = 20
 
-SWEP.FLESH_DECAL = Material(util.DecalMaterial("Impact.Flesh"))
+SWEP.FLESH_DECAL = Material("decals/flesh/blood1_subrect")
 SWEP.FLESH_DECAL_SIZE = 0.2
-SWEP.SCORCH_DECAL = Material(util.DecalMaterial("FadingScorch"))
+SWEP.SCORCH_DECAL = Material("decals/scorchfade_subrect")
 SWEP.SCORCH_DECAL_SIZE = 0.1
 SWEP.DECAL_COLOUR = Color(0, 0, 0)
 SWEP.DECAL_DELAY = 0.08
@@ -115,6 +115,17 @@ function SWEP:PrimaryAttack()
     else
         self:TurnOn()
     end
+end
+
+function SWEP:HolsterCustom()
+    if IsFirstTimePredicted() then
+        self:TurnOff()
+        return true
+    end
+end
+
+function SWEP:OnRemoveCustom()
+    self:TurnOff()
 end
 
 function SWEP:TurnOn()
