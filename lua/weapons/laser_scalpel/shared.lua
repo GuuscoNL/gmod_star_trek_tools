@@ -117,17 +117,6 @@ function SWEP:PrimaryAttack()
     end
 end
 
-function SWEP:HolsterCustom()
-    if IsFirstTimePredicted() then
-        self:TurnOff()
-        return true
-    end
-end
-
-function SWEP:OnRemoveCustom()
-    self:TurnOff()
-end
-
 function SWEP:TurnOn()
     self.LoopId = self:StartLoopingSound("star_trek.laser_scalpel_loop")
     self:SetNWString("bodyGroups", "01")
