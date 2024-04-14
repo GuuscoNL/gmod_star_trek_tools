@@ -21,7 +21,7 @@ function SWEP:OnDrop()
     self:TurnOff()
 end
 
--- A hook becuase the SWEP:Holster() function want to turn off the laser scalpel
+-- A hook becuase the SWEP:Holster() function doesn't turn off the laser scalpel
 hook.Add( "PlayerSwitchWeapon", "Star_Trek.tools.laser_scalpel_switch", function( ply, oldWeapon, newWeapon )
     if IsValid(oldWeapon) and oldWeapon:GetClass() == "laser_scalpel" then
         oldWeapon:TurnOff()

@@ -92,8 +92,6 @@ function handleBeam3rd(className, otherPly)
     renderBeam(startPos, endPos, ply, wep)
 end
 
-
-
 function renderBeam(startPos, endPos, filter, wep)
 
     local tr = util.TraceLine({
@@ -112,11 +110,11 @@ function renderBeam(startPos, endPos, filter, wep)
         if tr.Hit then
             local pos = tr.HitPos
             render.SetMaterial(wep.BEAM_MATERIAL)
-            render.DrawBeam(startPos, pos, beamWidth, 0, 1, wep.BEAM_COLOUR)
+            render.DrawBeam(startPos, pos, beamWidth, 0, wep.BEAM_TEXTURE_STRETCH * tr.Fraction, wep.BEAM_COLOUR)
             render.SetMaterial(wep.SPRITE_MATERIAL)
             render.DrawSprite(pos + tr.HitNormal * 0.2, spriteWidth, spriteWidth, wep.SPRITE_COLOUR)
 
-            if wep.lastDecal < CurTime() then
+            if wep.USE_DECAL and wep.lastDecal < CurTime() then
                 wep.lastDecal = CurTime() + wep.DECAL_DELAY
                 local ent = tr.Entity
 
@@ -128,7 +126,7 @@ function renderBeam(startPos, endPos, filter, wep)
             end
         else
             render.SetMaterial(wep.BEAM_MATERIAL)
-            render.DrawBeam(startPos, endPos, beamWidth, 0, 1, wep.BEAM_COLOUR)
+            render.DrawBeam(startPos, endPos, beamWidth, 0, wep.BEAM_TEXTURE_STRETCH, wep.BEAM_COLOUR)
         end
     cam.End3D()
 end

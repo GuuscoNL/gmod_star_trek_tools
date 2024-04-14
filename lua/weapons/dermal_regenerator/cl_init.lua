@@ -105,3 +105,7 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
         self:DrawViewModelCustom(flags)
     end
 end
+
+hook.Add("PostDrawOpaqueRenderables", "dermal_regenerator_draw_effects", function()
+    handleBeamEffects("dermal_regenerator")
+end)
