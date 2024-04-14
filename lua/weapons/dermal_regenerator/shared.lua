@@ -121,6 +121,7 @@ function SWEP:Think()
         end
     end
 
+    -- #TODO: DO trace
     if self:GetNW2Bool("active") and self.healDelay <= 0 then
         local trace = owner:GetEyeTrace()
         local ply = trace.Entity

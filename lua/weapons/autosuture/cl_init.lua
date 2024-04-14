@@ -105,3 +105,7 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
         self:DrawViewModelCustom(flags)
     end
 end
+
+hook.Add("PostDrawOpaqueRenderables", "autosuture_draw_effects", function()
+    handleBeamEffects("autosuture")
+end)
