@@ -13,7 +13,6 @@
 ---------------------------------------
 
 include("shared.lua")
-include("autorun/client/beam_utils.lua")
 
 SWEP.Author         = "GuuscoNL"
 SWEP.Contact        = "Discord: guusconl"

@@ -9,7 +9,7 @@
 ---------------------------------------
 
 ---------------------------------------
---       beam_utils | client         --
+--       beam_utils | shared         --
 ---------------------------------------
 
 function handleBeamEffects(className)
@@ -40,27 +40,39 @@ function handleBeamFPS(className)
         return
     end
 
+    local startPos, endPos = getBeamPossesFPS(ply, wep)
+
+    if startPos == nil or endPos == nil then
+        return
+    end
+    renderBeam(startPos, endPos, ply, wep)
+
+end
+
+function getBeamPossesFPS(ply, wep)
     local vm = ply:GetViewModel()
 
-    if IsValid(vm) then
-        local bonePos = vm:GetBonePosition(vm:LookupBone(wep.CustomViewModelBone))
-        local offset = Vector()
+    if not IsValid(vm) then return nil, nil end
 
-        offset:Set(wep.BEAM_FPS_START_OFFSET)
-        offset:Rotate(ply:GetAngles())
-        local startPos = bonePos + offset
+    local bonePos = vm:GetBonePosition(vm:LookupBone(wep.CustomViewModelBone))
+    local offset = Vector()
 
-        local boneMatrix = vm:GetBoneMatrix(vm:LookupBone(wep.CustomViewModelBone))
-        if boneMatrix == nil then
-            return
-        end
-        local direction = Vector(1, 0, 0)
-        direction:Rotate(wep.BEAM_FPS_ANGLE)
-        direction:Rotate(boneMatrix:GetAngles())
-        local endPos = startPos + direction * wep.BEAM_FPS_LENGTH
+    offset:Set(wep.BEAM_FPS_START_OFFSET)
+    offset:Rotate(ply:GetAngles())
+    local startPos = bonePos + offset
 
-        renderBeam(startPos, endPos, ply, wep)
+    local boneMatrix = vm:GetBoneMatrix(vm:LookupBone(wep.CustomViewModelBone))
+    if boneMatrix == nil then
+        return nil, nil
     end
+
+    local direction = Vector(1, 0, 0)
+    direction:Rotate(wep.BEAM_FPS_ANGLE)
+    direction:Rotate(boneMatrix:GetAngles())
+    local endPos = startPos + direction * wep.BEAM_FPS_LENGTH
+    -- print(startPos, endPos)
+
+    return startPos, endPos//Vector(-23.226196, -250.089890, 57.452595), Vector(-22.007980, -273.460785, 48.659584)
 end
 
 function handleBeam3rd(className, otherPly)

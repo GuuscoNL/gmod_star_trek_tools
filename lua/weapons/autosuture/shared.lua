@@ -122,28 +122,37 @@ function SWEP:Think()
         end
     end
 
-    -- #TODO: DO trace
-    if self:GetNW2Bool("active") and self.healDelay <= 0 then
-        local trace = owner:GetEyeTrace()
-        local ply = trace.Entity
-
-        if owner:GetPos():DistToSqr(ply:GetPos()) > 42 * 42 then return end
-
-        if ply:Health() < self.minHeal * ply:GetMaxHealth() or ply:Health() > self.maxHeal * ply:GetMaxHealth() then
-            self:EmitSound("star_trek.healed")
-        else
-            if IsValid(ply) and ply:IsPlayer() then
-                ply:SetHealth(ply:Health() + 1)
-            end
-        end
-
-        -- Reset the delay
-        self.healDelay = 1 / self.healSpeed
-    end
+    self:HandleHealing()
 
     -- update the delay
     if self.healDelay > 0 then
         self.healDelay = self.healDelay - FrameTime()
+    end
+end
+
+function SWEP:HandleHealing()
+    if self:GetNW2Bool("active") and self.healDelay <= 0 then
+
+        local startPos, endPos = getBeamPossesFPS(self:GetOwner(), self)
+
+        tr = util.TraceLine({
+            start = startPos,
+            endpos = endPos,
+            filter = owner,
+        })
+
+        if tr.Hit and tr.Entity:IsPlayer() then
+            local ply = tr.Entity
+            if ply:Health() < self.minHeal * ply:GetMaxHealth() or ply:Health() >= self.maxHeal * ply:GetMaxHealth() then
+                self:EmitSound("star_trek.healed")
+            else
+                if IsValid(ply) and ply:IsPlayer() then
+                    ply:SetHealth(ply:Health() + 1)
+                end
+            end
+            -- Reset the delay
+            self.healDelay = 1 / self.healSpeed
+        end
     end
 end
 

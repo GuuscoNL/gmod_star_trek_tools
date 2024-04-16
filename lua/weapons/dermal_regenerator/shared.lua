@@ -84,16 +84,16 @@ SWEP.active = false
 SWEP.SPRITE_COLOUR = Color(125, 0, 0)
 SWEP.BEAM_COLOUR = Color(255, 0, 0)
 
-SWEP.MIN_BEAM_WIDTH = 1.5
-SWEP.MAX_BEAM_WIDTH = 2
+SWEP.MIN_BEAM_WIDTH = 1
+SWEP.MAX_BEAM_WIDTH = 1.5
 SWEP.BEAM_TEXTURE_STRETCH = 1
 
-SWEP.MIN_SPRITE_SIZE = 8
-SWEP.MAX_SPRITE_SIZE = 12
+SWEP.MIN_SPRITE_SIZE = 18
+SWEP.MAX_SPRITE_SIZE = 20
 
 SWEP.BEAM_FPS_START_OFFSET = Vector(-0.7, 2, 4.7)
 SWEP.BEAM_FPS_ANGLE = Angle(-14, -10, 0)
-SWEP.BEAM_FPS_LENGTH = 20
+SWEP.BEAM_FPS_LENGTH = 25
 
 SWEP.BEAM_3RD_START_OFFSET = Vector(6.0, -1.7, -4)
 SWEP.BEAM_3RD_ANGLE = Angle(10, -10, 0)
@@ -108,41 +108,8 @@ function SWEP:InitializeCustom()
 end
 
 function SWEP:Think()
-    local owner = self:GetOwner()
-    if not IsValid(owner) then return end
-
-    if owner:KeyDown(IN_ATTACK) then
-        if not self:GetNW2Bool("active") then
-            self:TurnOn()
-        end
-    else
-        if self:GetNW2Bool("active") then
-            self:TurnOff()
-        end
-    end
-
-    -- #TODO: DO trace
-    if self:GetNW2Bool("active") and self.healDelay <= 0 then
-        local trace = owner:GetEyeTrace()
-        local ply = trace.Entity
-
-        if owner:GetPos():DistToSqr(ply:GetPos()) > 75 * 75 then return end
-
-        if ply:Health() < self.minHeal * ply:GetMaxHealth() or ply:Health() >= self.maxHeal * ply:GetMaxHealth() then
-            self:EmitSound("star_trek.healed")
-        else
-            if IsValid(ply) and ply:IsPlayer() then
-                ply:SetHealth(ply:Health() + 1)
-            end
-        end
-        -- Reset the delay
-        self.healDelay = 1 / self.healSpeed
-    end
-
-    -- update the delay
-    if self.healDelay > 0 then
-        self.healDelay = self.healDelay - FrameTime()
-    end
+    if not IsFirstTimePredicted() then return end
+    healThink(self)
 end
 
 function SWEP:TurnOn()
