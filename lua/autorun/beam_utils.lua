@@ -70,9 +70,8 @@ function getBeamPossesFPS(ply, wep)
     direction:Rotate(wep.BEAM_FPS_ANGLE)
     direction:Rotate(boneMatrix:GetAngles())
     local endPos = startPos + direction * wep.BEAM_FPS_LENGTH
-    -- print(startPos, endPos)
 
-    return startPos, endPos//Vector(-23.226196, -250.089890, 57.452595), Vector(-22.007980, -273.460785, 48.659584)
+    return startPos, endPos
 end
 
 function handleBeam3rd(className, otherPly)
