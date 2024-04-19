@@ -17,12 +17,15 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
+SWEP.lastDelay = 0
+SWEP.maxDelay = 0.5
 
-local DOSIS_STRENGTH = 10
 local DOSIS_DELAY_THRESHOLD = 20
 local DOSIS_DECAY_RATE = 0.1 -- per second
 local DOSIS_DELAY_LOW = 1.5
 local DOSIS_DELAY_HIGH = 5
+
+local DOSIS_STRENGTH = 10
 
 function SWEP:PrimaryAttack()
 
@@ -33,7 +36,6 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Heal()
-    self:SendWeaponAnim(ACT_VM_RECOIL1)
     local owner = self:GetOwner()
     if not IsValid(owner) then return end
 
@@ -43,8 +45,11 @@ function SWEP:Heal()
     if not tr.Hit or not IsValid(ply) or not ply:IsPlayer() or tr.HitPos:Distance(owner:GetShootPos()) > 60 then return end
     -- Trace is successful
 
-    -- owner plays sound because the sound is not played on the client when playing it on the SWEP
-    owner:EmitSound("player/suit_sprint.wav", 75, 100, 0.8, CHAN_AUTO)
+    self:SendWeaponAnim(ACT_VM_RECOIL1)
+    owner:SetAnimation(PLAYER_ATTACK1)
+
+    ply:ViewPunch(Angle(-0.3, 0, 0))
+    owner:EmitSound("hl1/fvox/hiss.wav", 75, 130, 0.9, CHAN_AUTO)
     owner:ViewPunch(Angle(-0.3, 0, 0))
 
     if ply.healData == nil then
@@ -52,8 +57,8 @@ function SWEP:Heal()
     end
 
     ply.healData.hypo_dose = (ply.healData.hypo_dose or 0) + DOSIS_STRENGTH
-    print(ply.healData.hypo_dose)
     ply.healData.startTime = CurTime()
+    print(ply.healData.hypo_dose)
 end
 
 function SWEP:SecondaryAttack()
@@ -64,13 +69,17 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:Revive()
-    self:SendWeaponAnim(ACT_VM_RECOIL1)
     local owner = self:GetOwner()
     if not IsValid(owner) then return end
 
     local tr = owner:GetEyeTrace()
     if not tr.Hit or not IsValid(tr.Entity) then return end
-    hook.Run("star_trek.tools.hypospray.revive", owner, tr.Entity)
+
+    if hook.Run("star_trek.tools.hypospray.revive", owner, tr.Entity) then
+        self:SendWeaponAnim(ACT_VM_RECOIL1)
+        owner:ViewPunch(Angle(-0.3, 0, 0))
+        owner:EmitSound("hl1/fvox/hiss.wav", 75,130, 0.9, CHAN_AUTO)
+    end
 end
 
 hook.Add("PlayerCanPickupWeapon", "Star_Trek.tools.hypospray_pickup", function(ply, weapon)
@@ -126,7 +135,7 @@ hook.Add("Star_Trek.Tricorder.AnalyseScanData", "Star_Trek.tools.hypospray_scan"
         Star_Trek.Logs:AddEntry(tricorder, owner, "Current dosis:", Star_Trek.LCARS.White, TEXT_ALIGN_LEFT)
 
         if scanData.hypo_dose >= 40 then
-            -- #TODO: add sound?
+            -- #TODO: warning sound?
             Star_Trek.Logs:AddEntry(tricorder, owner, scanData.hypo_dose .. "mL", Star_Trek.LCARS.ColorRed, TEXT_ALIGN_RIGHT)
         elseif scanData.hypo_dose >= 20 then
             Star_Trek.Logs:AddEntry(tricorder, owner, scanData.hypo_dose .. "mL", Star_Trek.LCARS.ColorOrange, TEXT_ALIGN_RIGHT)
