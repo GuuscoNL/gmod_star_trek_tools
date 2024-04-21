@@ -74,4 +74,3 @@ SWEP.CustomWorldModelScale = 1
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
 end
-

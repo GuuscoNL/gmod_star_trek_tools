@@ -45,12 +45,8 @@ function SWEP:Heal()
     if not tr.Hit or not IsValid(ply) or not ply:IsPlayer() or tr.HitPos:Distance(owner:GetShootPos()) > 60 then return end
     -- Trace is successful
 
-    self:SendWeaponAnim(ACT_VM_RECOIL1)
-    owner:SetAnimation(PLAYER_ATTACK1)
-
     ply:ViewPunch(Angle(-0.3, 0, 0))
-    owner:EmitSound("hl1/fvox/hiss.wav", 75, 130, 0.9, CHAN_AUTO)
-    owner:ViewPunch(Angle(-0.3, 0, 0))
+    self:Animate()
 
     if ply.healData == nil then
         ply.healData = {}
@@ -76,11 +72,28 @@ function SWEP:Revive()
     if not tr.Hit or not IsValid(tr.Entity) then return end
 
     if hook.Run("star_trek.tools.hypospray.revive", owner, tr.Entity) then
-        self:SendWeaponAnim(ACT_VM_RECOIL1)
-        owner:ViewPunch(Angle(-0.3, 0, 0))
-        owner:EmitSound("hl1/fvox/hiss.wav", 75,130, 0.9, CHAN_AUTO)
+        self:Animate()
     end
 end
+
+util.AddNetworkString("star_trek.tools.hypospray.animation")
+function SWEP:Animate()
+    local owner = self:GetOwner()
+    if not IsValid(owner) then return end
+
+    owner:ViewPunch(Angle(-0.3, 0, 0))
+    self:SendWeaponAnim(ACT_VM_RECOIL1)
+
+    net.Start("star_trek.tools.hypospray.animation")
+    net.WriteEntity(self)
+    net.Broadcast()
+end
+
+
+hook.Add("star_trek.tools.hypospray.revive" , "star_trek.tools.hypospray.revive", function(owner, ply)
+    print("REVIDED")
+    return ply:IsPlayer()
+end)
 
 hook.Add("PlayerCanPickupWeapon", "Star_Trek.tools.hypospray_pickup", function(ply, weapon)
     if weapon:GetClass() == "hypospray" and ply:HasWeapon("hypospray") then
