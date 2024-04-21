@@ -28,7 +28,7 @@ local DOSIS_DELAY_HIGH = 5
 local DOSIS_STRENGTH = 10
 
 function SWEP:PrimaryAttack()
-
+    if not IsFirstTimePredicted() then return end
     if self.lastDelay + self.maxDelay < CurTime() then
         self:Heal()
         self.lastDelay = CurTime()
@@ -58,6 +58,7 @@ function SWEP:Heal()
 end
 
 function SWEP:SecondaryAttack()
+    if not IsFirstTimePredicted() then return end
     if self.lastDelay + self.maxDelay < CurTime() then
         self:Revive()
         self.lastDelay = CurTime()
@@ -88,12 +89,6 @@ function SWEP:Animate()
     net.WriteEntity(self)
     net.Broadcast()
 end
-
-
-hook.Add("star_trek.tools.hypospray.revive" , "star_trek.tools.hypospray.revive", function(owner, ply)
-    print("REVIDED")
-    return ply:IsPlayer()
-end)
 
 hook.Add("PlayerCanPickupWeapon", "Star_Trek.tools.hypospray_pickup", function(ply, weapon)
     if weapon:GetClass() == "hypospray" and ply:HasWeapon("hypospray") then
