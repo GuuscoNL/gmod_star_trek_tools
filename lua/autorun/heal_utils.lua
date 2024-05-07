@@ -15,6 +15,7 @@
 HealUtils = {}
 
 function HealUtils:HealThink(wep)
+    if CLIENT then return end
     local owner = wep:GetOwner()
     if not IsValid(owner) then return end
 
@@ -38,7 +39,6 @@ end
 
 function HealUtils:HandleHealing(wep, owner)
     if wep:GetNW2Bool("active") and wep.healDelay <= 0 then
-        -- #BUG: Beam does weird shit when `beamUtils:getBeamPossesFPS` is called in CLIENT
         local startPos, endPos = beamUtils:getBeamPossesFPS(owner, wep)
         tr = util.TraceLine({
             start = startPos,
@@ -49,13 +49,13 @@ function HealUtils:HandleHealing(wep, owner)
         if tr.Hit and tr.Entity:IsPlayer() then
             local ply = tr.Entity
             if ply:Health() < wep.minHeal * ply:GetMaxHealth() or ply:Health() >= wep.maxHeal * ply:GetMaxHealth() then
-                wep:EmitSound("star_trek.healed")
-                ply:RemoveAllDecals()
+                HealUtils:PlayHealSound(owner)
+                HealUtils:RemoveDecals(ply)
             else
                 if IsValid(ply) and ply:IsPlayer() then
                     ply:SetHealth(ply:Health() + 1)
                     if ply:Health() == ply:GetMaxHealth() then
-                        wep:EmitSound("star_trek.healed")
+                        HealUtils:PlayHealSound(owner)
                     end
                 end
             end
@@ -65,4 +65,31 @@ function HealUtils:HandleHealing(wep, owner)
     end
 end
 
-print("Updated")
+if CLIENT then
+    net.Receive("star_trek.tools.heal_util.heal_sound", function()
+        local wep = LocalPlayer():GetActiveWeapon()
+        if not IsValid(wep) then return end
+        wep:EmitSound("star_trek.healed")
+    end)
+
+    net.Receive("star_trek.tools.heal_util.remove_decals", function()
+        local ply = net.ReadPlayer()
+        if not IsValid(ply) then return end
+        ply:RemoveAllDecals()
+    end)
+end
+
+if SERVER then
+    util.AddNetworkString("star_trek.tools.heal_util.heal_sound")
+    function HealUtils:PlayHealSound(ply)
+        net.Start("star_trek.tools.heal_util.heal_sound")
+        net.Send(ply)
+    end
+
+    util.AddNetworkString("star_trek.tools.heal_util.remove_decals")
+    function HealUtils:RemoveDecals(ply)
+        net.Start("star_trek.tools.heal_util.remove_decals")
+        net.WritePlayer(ply)
+        net.Broadcast()
+    end
+end
