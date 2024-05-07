@@ -105,38 +105,11 @@ function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNWString("bodyGroups", "00")
     self:SetNW2Bool("active", false)
-
 end
 
 function SWEP:Think()
     if not IsFirstTimePredicted() then return end
-    HealUtils:HandleHealing(self)
-end
-
-function SWEP:HandleHealing()
-    if self:GetNW2Bool("active") and self.healDelay <= 0 then
-
-        local startPos, endPos = beamUtils:getBeamPossesFPS(self:GetOwner(), self)
-
-        tr = util.TraceLine({
-            start = startPos,
-            endpos = endPos,
-            filter = owner,
-        })
-
-        if tr.Hit and tr.Entity:IsPlayer() then
-            local ply = tr.Entity
-            if ply:Health() < self.minHeal * ply:GetMaxHealth() or ply:Health() >= self.maxHeal * ply:GetMaxHealth() then
-                self:EmitSound("star_trek.healed")
-            else
-                if IsValid(ply) and ply:IsPlayer() then
-                    ply:SetHealth(ply:Health() + 1)
-                end
-            end
-            -- Reset the delay
-            self.healDelay = 1 / self.healSpeed
-        end
-    end
+    HealUtils:HealThink(self)
 end
 
 function SWEP:TurnOn()

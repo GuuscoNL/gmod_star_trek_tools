@@ -17,10 +17,6 @@ HealUtils = {}
 function HealUtils:HealThink(wep)
     local owner = wep:GetOwner()
     if not IsValid(owner) then return end
-    -- if CLIENT then
-    --     -- #TODO: Local sound!!!!!!!!!!!!!!!
-    --     return
-    -- end
 
     if owner:KeyDown(IN_ATTACK) then
         if not wep:GetNW2Bool("active") then
