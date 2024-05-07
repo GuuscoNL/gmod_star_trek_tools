@@ -109,7 +109,7 @@ end
 
 function SWEP:Think()
     if not IsFirstTimePredicted() then return end
-    healThink(self)
+    HealUtils:HealThink(self)
 end
 
 function SWEP:TurnOn()

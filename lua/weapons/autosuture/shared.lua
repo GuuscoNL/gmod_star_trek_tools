@@ -109,31 +109,14 @@ function SWEP:InitializeCustom()
 end
 
 function SWEP:Think()
-    local owner = self:GetOwner()
-    if not IsValid(owner) then return end
-
-    if owner:KeyDown(IN_ATTACK) then
-        if not self:GetNW2Bool("active") then
-            self:TurnOn()
-        end
-    else
-        if self:GetNW2Bool("active") then
-            self:TurnOff()
-        end
-    end
-
-    self:HandleHealing()
-
-    -- update the delay
-    if self.healDelay > 0 then
-        self.healDelay = self.healDelay - FrameTime()
-    end
+    if not IsFirstTimePredicted() then return end
+    HealUtils:HandleHealing(self)
 end
 
 function SWEP:HandleHealing()
     if self:GetNW2Bool("active") and self.healDelay <= 0 then
 
-        local startPos, endPos = getBeamPossesFPS(self:GetOwner(), self)
+        local startPos, endPos = beamUtils:getBeamPossesFPS(self:GetOwner(), self)
 
         tr = util.TraceLine({
             start = startPos,

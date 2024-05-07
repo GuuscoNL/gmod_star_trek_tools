@@ -12,7 +12,9 @@
 --       heal_utils | shared         --
 ---------------------------------------
 
-function healThink(wep)
+HealUtils = {}
+
+function HealUtils:HealThink(wep)
     local owner = wep:GetOwner()
     if not IsValid(owner) then return end
     -- if CLIENT then
@@ -30,7 +32,7 @@ function healThink(wep)
         end
     end
 
-    HandleHealing(wep, owner)
+    HealUtils:HandleHealing(wep, owner)
 
     -- update the delay
     if wep.healDelay > 0 then
@@ -38,10 +40,10 @@ function healThink(wep)
     end
 end
 
-function HandleHealing(wep, owner)
+function HealUtils:HandleHealing(wep, owner)
     if wep:GetNW2Bool("active") and wep.healDelay <= 0 then
-        -- #BUG: Beam does weird shit when `getBeamPossesFPS` is called in CLIENT
-        local startPos, endPos = getBeamPossesFPS(owner, wep)
+        -- #BUG: Beam does weird shit when `beamUtils:getBeamPossesFPS` is called in CLIENT
+        local startPos, endPos = beamUtils:getBeamPossesFPS(owner, wep)
         tr = util.TraceLine({
             start = startPos,
             endpos = endPos,

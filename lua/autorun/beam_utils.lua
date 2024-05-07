@@ -12,8 +12,10 @@
 --       beam_utils | shared         --
 ---------------------------------------
 
-function handleBeamEffects(className)
-    handleBeamFPS(className)
+beamUtils = {}
+
+function beamUtils:handleBeamEffects(className)
+    beamUtils:handleBeamFPS(className)
 
     local ply = LocalPlayer()
     for _, otherPly in player.Iterator() do
@@ -23,11 +25,11 @@ function handleBeamEffects(className)
             continue
         end
 
-        handleBeam3rd(className, otherPly)
+        beamUtils:handleBeam3rd(className, otherPly)
     end
 end
 
-function handleBeamFPS(className)
+function beamUtils:handleBeamFPS(className)
     local ply = LocalPlayer()
     local wep = ply:GetActiveWeapon()
 
@@ -40,16 +42,16 @@ function handleBeamFPS(className)
         return
     end
 
-    local startPos, endPos = getBeamPossesFPS(ply, wep)
+    local startPos, endPos = beamUtils:getBeamPossesFPS(ply, wep)
 
     if startPos == nil or endPos == nil then
         return
     end
-    renderBeam(startPos, endPos, ply, wep)
+    beamUtils:renderBeam(startPos, endPos, ply, wep)
 
 end
 
-function getBeamPossesFPS(ply, wep)
+function beamUtils:getBeamPossesFPS(ply, wep)
     local vm = ply:GetViewModel()
 
     if not IsValid(vm) then return nil, nil end
@@ -74,7 +76,7 @@ function getBeamPossesFPS(ply, wep)
     return startPos, endPos
 end
 
-function handleBeam3rd(className, otherPly)
+function beamUtils:handleBeam3rd(className, otherPly)
     local wep = otherPly:GetActiveWeapon()
 
     if not IsValid(wep) or not wep:GetClass() == className or not wep:GetNW2Bool("active") then
@@ -100,10 +102,10 @@ function handleBeam3rd(className, otherPly)
 
     local endPos = startPos + direction * wep.BEAM_3RD_LENGTH
 
-    renderBeam(startPos, endPos, ply, wep)
+    beamUtils:renderBeam(startPos, endPos, ply, wep)
 end
 
-function renderBeam(startPos, endPos, filter, wep)
+function beamUtils:renderBeam(startPos, endPos, filter, wep)
 
     local tr = util.TraceLine({
         start = startPos,
