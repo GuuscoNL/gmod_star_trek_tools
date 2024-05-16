@@ -57,7 +57,7 @@ SWEP.BoneManip = {
 
 SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/odn_scanner/odn_scanner.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomViewModelOffset = Vector(4, -2, -0.5)
+SWEP.CustomViewModelOffset = Vector(4, -2.1, -0.5)
 SWEP.CustomViewModelAngle = Angle(200, 0, 50)
 SWEP.CustomViewModelScale = 1
 

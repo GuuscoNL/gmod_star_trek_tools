@@ -54,7 +54,7 @@ function SWEP:Heal()
 
     ply.healData.hypo_dose = (ply.healData.hypo_dose or 0) + DOSIS_STRENGTH
     ply.healData.startTime = CurTime()
-    print(ply.healData.hypo_dose)
+    -- print(ply.healData.hypo_dose)
 end
 
 function SWEP:SecondaryAttack()

@@ -50,7 +50,9 @@ function HealUtils:HandleHealing(wep, owner)
             local ply = tr.Entity
             if ply:Health() < wep.minHeal * ply:GetMaxHealth() or ply:Health() >= wep.maxHeal * ply:GetMaxHealth() then
                 HealUtils:PlayHealSound(owner)
-                HealUtils:RemoveDecals(ply)
+                if ply:Health() >= ply:GetMaxHealth() then
+                    HealUtils:RemoveDecals(ply)
+                end
             else
                 if IsValid(ply) and ply:IsPlayer() then
                     ply:SetHealth(ply:Health() + 1)

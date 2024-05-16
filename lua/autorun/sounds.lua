@@ -11,7 +11,6 @@
 ---------------------------------------
 --         sounds  | Shared          --
 ---------------------------------------
-print("Loading sounds...")
 sound.Add({
     name = "star_trek.healed",
     channel = CHAN_AUTO,

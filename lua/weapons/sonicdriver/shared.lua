@@ -57,14 +57,14 @@ SWEP.BoneManip = {
 
 SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/sonicdriver/sonicdriver.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomViewModelOffset = Vector(4, -2, -0.5)
+SWEP.CustomViewModelOffset = Vector(4, -2, -0.7)
 SWEP.CustomViewModelAngle = Angle(20, 0, 140)
 SWEP.CustomViewModelScale = 1
 
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomWorldModelOffset = Vector(5, -2, -1.5)
-SWEP.CustomWorldModelAngle = Angle(10, 0, 180)
+SWEP.CustomWorldModelOffset = Vector(4.5, -1.5, -1.1)
+SWEP.CustomWorldModelAngle = Angle(40, 0, 180)
 SWEP.CustomWorldModelScale = 1
 
 SWEP.active = false

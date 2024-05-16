@@ -68,7 +68,7 @@ SWEP.CustomViewModelScale = 1
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomWorldModelOffset = Vector(3.7, -1.3, -1.5)
-SWEP.CustomWorldModelAngle = Angle(0, 90, 170)
+SWEP.CustomWorldModelAngle = Angle(15, 90, 170)
 SWEP.CustomWorldModelScale = 1
 
 function SWEP:InitializeCustom()
