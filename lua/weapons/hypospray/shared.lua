@@ -58,7 +58,7 @@ SWEP.BoneManip = {
         Ang = Angle(5, 0, 15)
     },
 }
--- #TODO: world model bone manip + animations
+
 SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/hypospray/hypospray.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector(4.4, -1.5, -1)

@@ -33,12 +33,12 @@ function beamUtils:handleBeamFPS(className)
     local ply = LocalPlayer()
     local wep = ply:GetActiveWeapon()
 
-    -- Check if the player is in a first-person view
+    -- Check if the player is in a third person view if so, skip
     if ply:ShouldDrawLocalPlayer() then
         return
     end
 
-    if not IsValid(wep) or not (wep:GetClass() == className and wep:GetNW2Bool("active")) then
+    if not IsValid(wep) or wep:GetClass() != className or not wep:GetNW2Bool("active") then
         return
     end
 
@@ -79,7 +79,7 @@ end
 function beamUtils:handleBeam3rd(className, otherPly)
     local wep = otherPly:GetActiveWeapon()
 
-    if not IsValid(wep) or not wep:GetClass() == className or not wep:GetNW2Bool("active") then
+    if not IsValid(wep) or wep:GetClass() != className or not wep:GetNW2Bool("active") then
         return
     end
 
