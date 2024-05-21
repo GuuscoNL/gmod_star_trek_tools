@@ -47,3 +47,21 @@ sound.Add({
     pitch = 100,
     sound = "guusconl/startrek/tng_fed_engidevice_loop_01.wav",
 })
+
+sound.Add({
+    name = "star_trek.hypospray_dose",
+    channel = CHAN_AUTO,
+    volume = 1,
+    level = 70,
+    pitch = 100,
+    sound = "guusconl/startrek/tng_fed_hypospray_02.mp3",
+})
+
+sound.Add({
+    name = "star_trek.hypospray_revive",
+    channel = CHAN_AUTO,
+    volume = 1,
+    level = 70,
+    pitch = 100,
+    sound = "guusconl/startrek/tng_fed_hypospray_03.mp3",
+})

@@ -46,7 +46,7 @@ function SWEP:Heal()
     -- Trace is successful
 
     ply:ViewPunch(Angle(-0.3, 0, 0))
-    self:Animate()
+    self:Animate(false)
 
     if ply.healData == nil then
         ply.healData = {}
@@ -73,12 +73,12 @@ function SWEP:Revive()
     if not tr.Hit or not IsValid(tr.Entity) then return end
 
     if hook.Run("star_trek.tools.hypospray.revive", owner, tr.Entity) then
-        self:Animate()
+        self:Animate(true)
     end
 end
 
 util.AddNetworkString("star_trek.tools.hypospray.animation")
-function SWEP:Animate()
+function SWEP:Animate(revive)
     local owner = self:GetOwner()
     if not IsValid(owner) then return end
 
@@ -87,6 +87,7 @@ function SWEP:Animate()
 
     net.Start("star_trek.tools.hypospray.animation")
     net.WriteEntity(self)
+    net.WriteBool(revive)
     net.Broadcast()
 end
 
