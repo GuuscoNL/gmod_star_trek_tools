@@ -71,8 +71,6 @@ SWEP.active = false
 SWEP.scanning = false
 SWEP.lastReload = 0
 
---#BUG: Can scan while off
-
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNW2Bool("scanning", false)

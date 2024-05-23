@@ -44,7 +44,7 @@ sound.Add({
     channel = CHAN_AUTO,
     volume = 1,
     level = 70,
-    pitch = 100,
+    pitch = 50,
     sound = "guusconl/startrek/tng_fed_laserscalpel_loop.wav",
 })
 

@@ -124,6 +124,10 @@ function beamUtils:renderBeam(startPos, endPos, filter, wep)
             local pos = tr.HitPos
             render.SetMaterial(wep.BEAM_MATERIAL)
             render.DrawBeam(startPos, pos, beamWidth, 0, wep.BEAM_TEXTURE_STRETCH * tr.Fraction, wep.BEAM_COLOUR)
+            if wep.SECOND_BEAM then
+                render.DrawBeam(startPos, pos, beamWidth, 0, wep.BEAM_TEXTURE_STRETCH / 2 * tr.Fraction, Color(255, 255, 255, 100))
+            end
+
             render.SetMaterial(wep.SPRITE_MATERIAL)
             render.DrawSprite(pos + tr.HitNormal * 0.2, spriteWidth, spriteWidth, wep.SPRITE_COLOUR)
 
@@ -137,9 +141,37 @@ function beamUtils:renderBeam(startPos, endPos, filter, wep)
                     util.DecalEx(wep.SCORCH_DECAL, ent, tr.HitPos, tr.HitNormal, wep.DECAL_COLOUR, wep.SCORCH_DECAL_SIZE, wep.SCORCH_DECAL_SIZE)
                 end
             end
+
+            if wep.SPARKS and wep.SPARKS_LAST_SPARK < CurTime() then
+                wep.SPARKS_LAST_SPARK = CurTime() + wep.SPARKS_DELAY
+
+                -- impact effect
+                local effectData = EffectData()
+                effectData:SetOrigin(tr.HitPos)
+                effectData:SetNormal(tr.HitNormal)
+                util.Effect("AR2Impact", effectData)
+
+                -- sparks
+                effectData = EffectData()
+                effectData:SetOrigin(tr.HitPos)
+                effectData:SetNormal(tr.HitNormal)
+                util.Effect("MetalSpark", effectData)
+
+                if wep.SPARK_LOOP_ID == nil then
+                    wep.SPARK_LOOP_ID = wep:StartLoopingSound("ambient/energy/electric_loop.wav")
+                end
+            end
+
         else
             render.SetMaterial(wep.BEAM_MATERIAL)
             render.DrawBeam(startPos, endPos, beamWidth, 0, wep.BEAM_TEXTURE_STRETCH, wep.BEAM_COLOUR)
+            if wep.SECOND_BEAM then
+                render.DrawBeam(startPos, endPos, beamWidth, 0, wep.BEAM_TEXTURE_STRETCH / 2, Color(255, 255, 255, 100))
+            end
+            if wep.SPARK_LOOP_ID then
+                wep:StopLoopingSound(wep.SPARK_LOOP_ID)
+                wep.SPARK_LOOP_ID = nil
+            end
         end
     cam.End3D()
 end
