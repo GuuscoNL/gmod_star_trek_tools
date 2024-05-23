@@ -49,7 +49,7 @@ sound.Add({
 })
 
 sound.Add({
-    name = "star_trek.sonicdriver_loop",
+    name = "star_trek.sonic_driver_loop",
     channel = CHAN_AUTO,
     volume = 1,
     level = 70,

@@ -14,7 +14,7 @@
 
 SWEP.Base = "oni_base"
 
-SWEP.PrintName = "Laser scalpel"
+SWEP.PrintName = "Laser Scalpel"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false

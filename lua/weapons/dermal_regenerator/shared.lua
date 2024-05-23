@@ -14,7 +14,7 @@
 
 SWEP.Base = "oni_base"
 
-SWEP.PrintName = "Dermal regenerator"
+SWEP.PrintName = "Dermal Regenerator"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false

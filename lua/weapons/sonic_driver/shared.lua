@@ -14,7 +14,7 @@
 
 SWEP.Base = "oni_base"
 
-SWEP.PrintName = "sonicdriver"
+SWEP.PrintName = "Sonic Driver"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
@@ -71,6 +71,8 @@ SWEP.active = false
 SWEP.scanning = false
 SWEP.lastReload = 0
 
+--#BUG: Can scan while off
+
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNW2Bool("scanning", false)
@@ -78,6 +80,7 @@ end
 
 function SWEP:PrimaryAttack()
     if not IsFirstTimePredicted() then return end
+    print(self.active)
     if not self.active then return end
 
     if self:GetNW2Bool("scanning") then
@@ -111,7 +114,7 @@ function SWEP:TurnOff()
 end
 
 function SWEP:ScanOn()
-    self.LoopId = self:StartLoopingSound("star_trek.sonicdriver_loop")
+    self.LoopId = self:StartLoopingSound("star_trek.sonic_driver_loop")
     self:SetSkin(2)
     self:SetNW2Bool("scanning", true)
 end

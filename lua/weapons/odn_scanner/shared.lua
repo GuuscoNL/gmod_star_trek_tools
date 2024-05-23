@@ -14,7 +14,7 @@
 
 SWEP.Base = "oni_base"
 
-SWEP.PrintName = "odn scanner"
+SWEP.PrintName = "Odn Scanner"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false

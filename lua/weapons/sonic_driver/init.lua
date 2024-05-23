@@ -21,20 +21,20 @@ function SWEP:OnRemove()
     self:TurnOff()
 end
 
-hook.Add("PlayerDroppedWeapon", "Star_Trek.tools.sonicdriver_drop", function(ply, weapon)
-    if weapon:GetClass() == "sonicdriver" then
+hook.Add("PlayerDroppedWeapon", "Star_Trek.tools.sonic_driver_drop", function(ply, weapon)
+    if weapon:GetClass() == "sonic_driver" then
         weapon:TurnOff()
     end
 end)
 
-hook.Add("PlayerCanPickupWeapon", "Star_Trek.tools.sonicdriver_pickup", function(ply, weapon)
-    if weapon:GetClass() == "sonicdriver" and ply:HasWeapon("sonicdriver") then
+hook.Add("PlayerCanPickupWeapon", "Star_Trek.tools.sonic_driver_pickup", function(ply, weapon)
+    if weapon:GetClass() == "sonic_driver" and ply:HasWeapon("sonic_driver") then
         return false
     end
 end)
 
-hook.Add( "PlayerSwitchWeapon", "Star_Trek.tools.sonicdriver_switch", function( ply, oldWeapon, newWeapon )
-    if IsValid(oldWeapon) and oldWeapon:GetClass() == "sonicdriver" then
+hook.Add( "PlayerSwitchWeapon", "Star_Trek.tools.sonic_driver_switch", function( ply, oldWeapon, newWeapon )
+    if IsValid(oldWeapon) and oldWeapon:GetClass() == "sonic_driver" then
         oldWeapon:TurnOff()
     end
 end )

@@ -109,12 +109,12 @@ end
 local SPRITE_MATERIAL = Material("sprites/light_glow02_add")
 local SPRITE_COLOUR = Color(39, 39, 39)
 
-hook.Add("PostDrawOpaqueRenderables", "sonicdriver_draw_effects", function()
+hook.Add("PostDrawOpaqueRenderables", "sonic_driver_draw_effects", function()
     local ply = LocalPlayer()
 
     -- Check if the player is in a first-person view
     local wep = ply:GetActiveWeapon()
-    if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "sonicdriver" and wep:GetNW2Bool("scanning") then
+    if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("scanning") then
 
         local vm = ply:GetViewModel()
 
@@ -141,7 +141,7 @@ hook.Add("PostDrawOpaqueRenderables", "sonicdriver_draw_effects", function()
 
         wep = OtherPly:GetActiveWeapon()
 
-        if IsValid(wep) and wep:GetClass() == "sonicdriver" and wep:GetNW2Bool("scanning") then
+        if IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("scanning") then
             local bone_matrix = OtherPly:GetBoneMatrix(OtherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
 
             if bone_matrix == nil then

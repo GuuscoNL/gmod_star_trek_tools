@@ -14,7 +14,7 @@
 
 SWEP.Base = "oni_base"
 
-SWEP.PrintName = "autosuture"
+SWEP.PrintName = "Autosuture"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
