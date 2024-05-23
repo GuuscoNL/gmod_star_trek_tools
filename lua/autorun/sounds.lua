@@ -40,6 +40,15 @@ sound.Add({
 })
 
 sound.Add({
+    name = "star_trek.dermal_regenerator_loop",
+    channel = CHAN_AUTO,
+    volume = 1,
+    level = 70,
+    pitch = 100,
+    sound = "guusconl/startrek/tng_fed_laserscalpel_loop.wav",
+})
+
+sound.Add({
     name = "star_trek.sonicdriver_loop",
     channel = CHAN_AUTO,
     volume = 1,

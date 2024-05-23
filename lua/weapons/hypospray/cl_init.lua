@@ -34,8 +34,8 @@ net.Receive("star_trek.tools.hypospray.animation", function()
 
     owner:SetAnimation(PLAYER_ATTACK1)
     if revive then
-        wep:EmitSound("star_trek.hypospray_revive", 75,130, 0.9, CHAN_AUTO)
+        wep:EmitSound("star_trek.hypospray_revive")
     else
-        wep:EmitSound("star_trek.hypospray_dose", 75,130, 0.9, CHAN_AUTO)
+        wep:EmitSound("star_trek.hypospray_dose")
     end
 end)

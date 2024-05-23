@@ -113,7 +113,7 @@ function SWEP:Think()
 end
 
 function SWEP:TurnOn()
-    self.LoopId = self:StartLoopingSound("star_trek.laser_scalpel_loop")
+    self.LoopId = self:StartLoopingSound("star_trek.dermal_regenerator_loop")
     self:SetNW2Bool("active", true)
 end
 
