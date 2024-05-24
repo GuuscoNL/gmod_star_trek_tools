@@ -8,4 +8,6 @@
 [ ] pitch shift?!
 [ ] self heal
 [ ] heal one HP first time heal hypospray, so at 0 dosis
-[X] hyperspanner lightsaber, beam blue. impact sprite
+[ ] hyperspanner lightsaber, beam blue. impact sprite
+    [ ] Damage to player
+    [ ] suicide?

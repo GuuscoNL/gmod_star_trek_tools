@@ -127,4 +127,8 @@ function SWEP:TurnOff()
         self.LoopId = nil
     end
     self:SetNW2Bool("active", false)
+
+    net.Start("star_trek.tools.beam_util.disable_spark_looping_sound")
+    net.WriteEntity(self)
+    net.Broadcast()
 end
