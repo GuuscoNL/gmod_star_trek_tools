@@ -45,7 +45,7 @@ sound.Add({
     volume = 1,
     level = 70,
     pitch = 50,
-    sound = "guusconl/startrek/tng_fed_laserscalpel_loop.wav",
+    sound = "guusconl/startrek/tng_fed_dermalregenerator_loop.wav",
 })
 
 sound.Add({
