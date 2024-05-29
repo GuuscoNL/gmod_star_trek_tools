@@ -7,7 +7,7 @@
 [X] Make sure everything is capatilized
 [ ] pitch shift?!
 [ ] self heal
-[ ] heal one HP first time heal hypospray, so at 0 dosis
+[X] heal one HP first time heal hypospray, so at 0 dosis
 [ ] hyperspanner lightsaber, beam blue. impact sprite
     [ ] Damage to player
     [ ] suicide?

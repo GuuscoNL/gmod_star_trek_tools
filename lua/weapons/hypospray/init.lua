@@ -50,11 +50,17 @@ function SWEP:Heal()
 
     if ply.healData == nil then
         ply.healData = {}
+        ply.healData.hypo_dose = 0
+    end
+
+    -- Heal 1 HP if first time dosing
+    if ply:Health() < ply:GetMaxHealth() and ply.healData.hypo_dose == 0 then
+        ply:SetHealth(math.min(ply:Health() + 1, ply:GetMaxHealth()))
     end
 
     ply.healData.hypo_dose = (ply.healData.hypo_dose or 0) + DOSIS_STRENGTH
     ply.healData.startTime = CurTime()
-    -- print(ply.healData.hypo_dose)
+
 end
 
 function SWEP:SecondaryAttack()

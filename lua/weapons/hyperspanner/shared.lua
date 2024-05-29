@@ -108,8 +108,6 @@ SWEP.BEAM_3RD_LENGTH = 25
 
 SWEP.USE_DECAL = false
 
-SWEP.IS_WELDING = false
-
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNW2Bool("active", false)
