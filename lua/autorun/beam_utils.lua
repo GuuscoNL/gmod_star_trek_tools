@@ -76,32 +76,6 @@ if CLIENT then
         return startPos, endPos
     end
 
-
-    function beamUtils:getBeamPossesTrace(ply, wep)
-        local vm = ply:GetViewModel()
-
-        if not IsValid(vm) then return nil, nil end
-
-        local bonePos = vm:GetBonePosition(vm:LookupBone(wep.CustomViewModelBone))
-        local offset = Vector()
-
-        offset:Set(wep.BEAM_FPS_START_OFFSET)
-        offset:Rotate(ply:GetAngles())
-        local startPos = bonePos + offset
-
-        local boneMatrix = vm:GetBoneMatrix(vm:LookupBone(wep.CustomViewModelBone))
-        if boneMatrix == nil then
-            return nil, nil
-        end
-
-        local direction = Vector(1, 0, 0)
-        direction:Rotate(wep.BEAM_FPS_ANGLE)
-        direction:Rotate(boneMatrix:GetAngles())
-        local endPos = startPos + direction * wep.BEAM_FPS_LENGTH
-
-        return startPos, endPos
-    end
-
     function beamUtils:getBeamPosses3rd(ply, wep)
         local boneMatrix = ply:GetBoneMatrix(ply:LookupBone(wep.CustomWorldModelBone))
         if boneMatrix == nil then
