@@ -15,9 +15,17 @@
 HealUtils = {}
 
 function HealUtils:HealThink(wep)
-    if CLIENT then return end
     local owner = wep:GetOwner()
+    if not IsFirstTimePredicted() then return end
     if not IsValid(owner) then return end
+    if CLIENT then
+        HealUtils:HandleHealing(wep, owner)
+            -- update the delay
+        if wep.healDelay > 0 then
+            wep.healDelay = wep.healDelay - FrameTime()
+        end
+        return
+    end
 
     if owner:KeyDown(IN_ATTACK) then
         if not wep:GetNW2Bool("active") then
@@ -27,13 +35,6 @@ function HealUtils:HealThink(wep)
         if wep:GetNW2Bool("active") then
             wep:TurnOff()
         end
-    end
-
-    HealUtils:HandleHealing(wep, owner)
-
-    -- update the delay
-    if wep.healDelay > 0 then
-        wep.healDelay = wep.healDelay - FrameTime()
     end
 end
 
@@ -46,19 +47,27 @@ function HealUtils:HandleHealing(wep, owner)
             filter = owner,
         })
 
-        if tr.Hit and tr.Entity:IsPlayer() then
-            local ply = tr.Entity
+
+        debugoverlay.Sphere(startPos, 1, 0.1, Color(255, 0, 0), true)
+        debugoverlay.Sphere(endPos, 1, 0.1, Color(0, 255, 0), true)
+
+        local ply = tr.Entity
+        if not IsValid(ply) then return end
+        if tr.Hit and ply:IsPlayer() then
             if ply:Health() < wep.minHeal * ply:GetMaxHealth() or ply:Health() >= wep.maxHeal * ply:GetMaxHealth() then
-                HealUtils:PlayHealSound(owner)
+                wep:EmitSound("star_trek.healed")
                 if ply:Health() >= ply:GetMaxHealth() then
-                    HealUtils:RemoveDecals(ply)
+                    ply:RemoveAllDecals()
                 end
             else
-                if IsValid(ply) and ply:IsPlayer() then
-                    ply:SetHealth(ply:Health() + 1)
-                    if ply:Health() == ply:GetMaxHealth() then
-                        HealUtils:PlayHealSound(owner)
-                    end
+                -- Tell the server to add health to the player
+                net.Start("star_trek.tools.heal_util.add_health")
+                net.WritePlayer(ply)
+                net.WriteUInt(1, 8)
+                net.SendToServer()
+
+                if ply:Health() == ply:GetMaxHealth() then
+                    wep:EmitSound("star_trek.healed")
                 end
             end
             -- Reset the delay
@@ -67,28 +76,27 @@ function HealUtils:HandleHealing(wep, owner)
     end
 end
 
-if CLIENT then
-    net.Receive("star_trek.tools.heal_util.heal_sound", function()
-        local wep = LocalPlayer():GetActiveWeapon()
-        if not IsValid(wep) then return end
-        wep:EmitSound("star_trek.healed")
+if SERVER then
+
+    util.AddNetworkString("star_trek.tools.heal_util.add_health")
+    net.Receive("star_trek.tools.heal_util.add_health", function()
+        local ply = net.ReadPlayer()
+        local amount = net.ReadUInt(8)
+        if not IsValid(ply) then return end
+
+        if ply:Health() >= ply:GetMaxHealth() then return end
+
+        ply:SetHealth(ply:Health() + amount)
     end)
+
+    util.AddNetworkString("star_trek.tools.heal_util.remove_decals")
 
     net.Receive("star_trek.tools.heal_util.remove_decals", function()
         local ply = net.ReadPlayer()
         if not IsValid(ply) then return end
-        ply:RemoveAllDecals()
+        HealUtils:RemoveDecals(ply)
     end)
-end
 
-if SERVER then
-    util.AddNetworkString("star_trek.tools.heal_util.heal_sound")
-    function HealUtils:PlayHealSound(ply)
-        net.Start("star_trek.tools.heal_util.heal_sound")
-        net.Send(ply)
-    end
-
-    util.AddNetworkString("star_trek.tools.heal_util.remove_decals")
     function HealUtils:RemoveDecals(ply)
         net.Start("star_trek.tools.heal_util.remove_decals")
         net.WritePlayer(ply)

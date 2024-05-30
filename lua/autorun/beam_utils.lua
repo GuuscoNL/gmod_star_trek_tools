@@ -57,6 +57,31 @@ if CLIENT then
 
         if not IsValid(vm) then return nil, nil end
 
+        local boneMatrix = vm:GetBoneMatrix(vm:LookupBone(wep.CustomViewModelBone))
+        if boneMatrix == nil then
+            return nil, nil
+        end
+        local offset = Vector()
+
+        offset:Set(wep.BEAM_FPS_START_OFFSET)
+        offset:Rotate(ply:GetAngles())
+        local startPos = boneMatrix:GetTranslation() + offset
+
+
+        local direction = Vector(1, 0, 0)
+        direction:Rotate(wep.BEAM_FPS_ANGLE)
+        direction:Rotate(boneMatrix:GetAngles())
+        local endPos = startPos + direction * wep.BEAM_FPS_LENGTH
+
+        return startPos, endPos
+    end
+
+
+    function beamUtils:getBeamPossesTrace(ply, wep)
+        local vm = ply:GetViewModel()
+
+        if not IsValid(vm) then return nil, nil end
+
         local bonePos = vm:GetBonePosition(vm:LookupBone(wep.CustomViewModelBone))
         local offset = Vector()
 
@@ -77,14 +102,8 @@ if CLIENT then
         return startPos, endPos
     end
 
-    function beamUtils:handleBeam3rd(className, otherPly)
-        local wep = otherPly:GetActiveWeapon()
-
-        if not IsValid(wep) or wep:GetClass() != className or not wep:GetNW2Bool("active") then
-            return
-        end
-
-        local boneMatrix = otherPly:GetBoneMatrix(otherPly:LookupBone(wep.CustomWorldModelBone))
+    function beamUtils:getBeamPosses3rd(ply, wep)
+        local boneMatrix = ply:GetBoneMatrix(ply:LookupBone(wep.CustomWorldModelBone))
         if boneMatrix == nil then
             return
         end
@@ -103,6 +122,18 @@ if CLIENT then
 
         local endPos = startPos + direction * wep.BEAM_3RD_LENGTH
 
+        return startPos, endPos
+    end
+
+    function beamUtils:handleBeam3rd(className, otherPly)
+        local wep = otherPly:GetActiveWeapon()
+
+        if not IsValid(wep) or wep:GetClass() != className or not wep:GetNW2Bool("active") then
+            return
+        end
+
+
+        local startPos, endPos = beamUtils:getBeamPosses3rd(otherPly, wep)
         beamUtils:renderBeam(startPos, endPos, ply, wep)
     end
 
