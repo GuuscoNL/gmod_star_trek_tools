@@ -25,7 +25,7 @@ SWEP.SlotPos = 0
 SWEP.ViewModel = "models/weapons/v_pistol.mdl"
 SWEP.WorldModel = "models/crazycanadian/star_trek/tools/hyperspanner/hyperspanner.mdl"
 
-SWEP.HoldType = "slam"
+SWEP.HoldType = "revolver"
 
 SWEP.BoneManip = {
     ["ValveBiped.clip"] = {
@@ -44,7 +44,7 @@ SWEP.BoneManip = {
         Ang = Angle(-0, 0, 0)
     },
     ["ValveBiped.Bip01_R_Hand"] = {
-        Ang = Angle(-40, -15, 0)
+        Ang = Angle(-45, -10, 0)
     },
     ["ValveBiped.Bip01_R_Finger1"] = {
         Ang = Angle(-20, -5, 30)
@@ -70,8 +70,8 @@ SWEP.CustomViewModelScale = 1
 
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomWorldModelOffset = Vector(0, -1.3, 1)
-SWEP.CustomWorldModelAngle = Angle(-143, -10, -90)
+SWEP.CustomWorldModelOffset = Vector(-1, -1.3, 1)
+SWEP.CustomWorldModelAngle = Angle(-149, -5, -90)
 SWEP.CustomWorldModelScale = 1
 
 
@@ -80,7 +80,7 @@ SWEP.active = false
 SWEP.SPRITE_MATERIAL = Material("sprites/light_glow02_add")
 SWEP.BEAM_MATERIAL = Material("sprites/tp_beam001")
 SWEP.active = false
-SWEP.DamageSpeed = 5 -- per second
+SWEP.DamageSpeed = 10 -- per second
 SWEP.DamageDelay = 0
 
 SWEP.SECOND_BEAM = true
@@ -100,15 +100,24 @@ SWEP.BEAM_TEXTURE_STRETCH = 1
 SWEP.MIN_SPRITE_SIZE = 20
 SWEP.MAX_SPRITE_SIZE = 25
 
-SWEP.BEAM_FPS_START_OFFSET = Vector(-3, 6, 4.5)
-SWEP.BEAM_FPS_ANGLE = Angle(77, -10, 0)
-SWEP.BEAM_FPS_LENGTH = 30
+SWEP.BEAM_FPS_START_OFFSET = Vector(-4, 5.5, 4)
+SWEP.BEAM_FPS_ANGLE = Angle(75, -5, 0)
+SWEP.BEAM_FPS_LENGTH = 47
 
-SWEP.BEAM_3RD_START_OFFSET = Vector(10.5, -3, -7)
-SWEP.BEAM_3RD_ANGLE = Angle(37, -10, 0)
+SWEP.BEAM_3RD_START_OFFSET = Vector(10.5, -2.3, -6)
+SWEP.BEAM_3RD_ANGLE = Angle(31, -6, 0)
 SWEP.BEAM_3RD_LENGTH = 25
 
-SWEP.USE_DECAL = false
+SWEP.USE_DECAL = true
+
+SWEP.FLESH_DECAL = Material("decals/flesh/blood1_subrect")
+SWEP.FLESH_DECAL_SIZE = 0.6
+SWEP.SCORCH_DECAL = Material("decals/scorchfade_subrect")
+SWEP.SCORCH_DECAL_SIZE = 0.4
+SWEP.DECAL_COLOUR = Color(0, 0, 0)
+SWEP.DECAL_DELAY = 0.05
+
+SWEP.lastDecal = 0
 
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
