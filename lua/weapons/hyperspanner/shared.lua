@@ -80,6 +80,8 @@ SWEP.active = false
 SWEP.SPRITE_MATERIAL = Material("sprites/light_glow02_add")
 SWEP.BEAM_MATERIAL = Material("sprites/tp_beam001")
 SWEP.active = false
+SWEP.DamageSpeed = 5 -- per second
+SWEP.DamageDelay = 0
 
 SWEP.SECOND_BEAM = true
 
@@ -129,4 +131,60 @@ function SWEP:TurnOff()
     net.Start("star_trek.tools.beam_util.disable_spark_looping_sound")
     net.WriteEntity(self)
     net.Broadcast()
+end
+
+function SWEP:Think()
+    if not IsFirstTimePredicted() then return end
+
+    local owner = self:GetOwner()
+    if not IsValid(owner) then return end
+
+    if CLIENT then
+        if self:GetNW2Bool("active") and self.DamageDelay <= 0 then
+
+            local startPos, endPos
+            if LocalPlayer():ShouldDrawLocalPlayer() then
+                startPos, endPos = beamUtils:getBeamPosses3rd(owner, self)
+            else
+                startPos, endPos = beamUtils:getBeamPossesFPS(owner, self)
+            end
+
+
+            -- draw debug balls
+            debugoverlay.Sphere(startPos, 1, 0.2, Color(255, 0, 0), false)
+            debugoverlay.Sphere(endPos, 1, 0.2 , Color(0, 255, 0), false)
+
+            tr = util.TraceLine({
+                start = startPos,
+                endpos = endPos,
+                filter = owner,
+            })
+
+            if tr.Hit and tr.Entity:IsPlayer() then
+                net.Start("star_trek.tools.hyperspanner.take_damage")
+                net.WritePlayer(owner)
+                net.WriteEntity(self)
+                net.WritePlayer(tr.Entity)
+                net.WriteUInt(1, 8)
+                net.SendToServer()
+            end
+
+            self.DamageDelay = 1 / self.DamageSpeed
+        end
+
+        if self.DamageDelay > 0 then
+            self.DamageDelay = self.DamageDelay - FrameTime()
+        end
+        return
+    elseif SERVER then
+        if owner:KeyDown(IN_ATTACK) then
+            if not self:GetNW2Bool("active") then
+                self:TurnOn()
+            end
+        else
+            if self:GetNW2Bool("active") then
+                self:TurnOff()
+            end
+        end
+    end
 end

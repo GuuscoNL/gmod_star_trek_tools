@@ -21,23 +21,6 @@ function SWEP:OnRemove()
     self:TurnOff()
 end
 
-function SWEP:Think()
-    if not IsFirstTimePredicted() then return end
-
-    local owner = self:GetOwner()
-    if not IsValid(owner) then return end
-
-    if owner:KeyDown(IN_ATTACK) then
-        if not self:GetNW2Bool("active") then
-            self:TurnOn()
-        end
-    else
-        if self:GetNW2Bool("active") then
-            self:TurnOff()
-        end
-    end
-end
-
 hook.Add("PlayerDroppedWeapon", "Star_Trek.tools.hyperspanner_drop", function(ply, weapon)
     if weapon:GetClass() == "hyperspanner" then
         weapon:TurnOff()
@@ -55,3 +38,21 @@ hook.Add( "PlayerSwitchWeapon", "Star_Trek.tools.hyperspanner_switch", function(
         oldWeapon:TurnOff()
     end
 end )
+
+util.AddNetworkString("star_trek.tools.hyperspanner.take_damage")
+net.Receive("star_trek.tools.hyperspanner.take_damage", function()
+    local attacker = net.ReadPlayer()
+    local weapon = net.ReadEntity()
+    local victim = net.ReadPlayer()
+    local amount = net.ReadUInt(8)
+
+    if not IsValid(victim) then return end
+
+    local damInfo = DamageInfo()
+    damInfo:SetAttacker(attacker)
+    damInfo:SetInflictor(weapon)
+    damInfo:SetDamage(amount)
+    damInfo:SetDamageType(DMG_ENERGYBEAM)
+
+    victim:TakeDamageInfo(damInfo)
+end)

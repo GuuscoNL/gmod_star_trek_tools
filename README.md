@@ -6,8 +6,7 @@
     - Minor Dermal Abrasions
 [X] Make sure everything is capatilized
 [ ] pitch shift?!
-[ ] self heal
+[ ] self heal hypospray
 [X] heal one HP first time heal hypospray, so at 0 dosis
-[ ] hyperspanner lightsaber, beam blue. impact sprite
-    [ ] Damage to player
-    [ ] suicide?
+[X] hyperspanner lightsaber, beam blue. impact sprite
+    [X] Damage to player
