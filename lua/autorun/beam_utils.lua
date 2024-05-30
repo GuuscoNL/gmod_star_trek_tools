@@ -61,6 +61,7 @@ if CLIENT then
         if boneMatrix == nil then
             return nil, nil
         end
+
         local offset = Vector()
 
         offset:Set(wep.BEAM_FPS_START_OFFSET)

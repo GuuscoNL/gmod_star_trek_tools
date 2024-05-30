@@ -41,10 +41,11 @@ end
 function HealUtils:HandleHealing(wep, owner)
     if wep:GetNW2Bool("active") and wep.healDelay <= 0 then
         local startPos, endPos
+
         if LocalPlayer():ShouldDrawLocalPlayer() then
-            startPos, endPos = beamUtils:getBeamPosses3rd(owner, self)
+            startPos, endPos = beamUtils:getBeamPosses3rd(owner, wep)
         else
-            startPos, endPos = beamUtils:getBeamPossesFPS(owner, self)
+            startPos, endPos = beamUtils:getBeamPossesFPS(owner, wep)
         end
         tr = util.TraceLine({
             start = startPos,
