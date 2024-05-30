@@ -67,6 +67,15 @@ sound.Add({
 })
 
 sound.Add({
+    name = "star_trek.hypperspanner_loop",
+    channel = CHAN_AUTO,
+    volume = 0.5,
+    level = 70,
+    pitch = 100,
+    sound = "guusconl/startrek/tng_fed_hyperspanner_loop.wav",
+})
+
+sound.Add({
     name = "star_trek.hypospray_dose",
     channel = CHAN_AUTO,
     volume = 1,

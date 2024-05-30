@@ -116,7 +116,7 @@ function SWEP:InitializeCustom()
 end
 
 function SWEP:TurnOn()
-    self.LoopId = self:StartLoopingSound("star_trek.laser_scalpel_loop")
+    self.LoopId = self:StartLoopingSound("star_trek.hypperspanner_loop")
     self:SetNW2Bool("active", true)
 end
 
