@@ -73,27 +73,13 @@ SWEP.lastReload = 0
 
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
-    self:SetNW2Bool("scanning", false)
+    self:SetNW2Bool("active", false)
 end
 
 function SWEP:PrimaryAttack()
     if not IsFirstTimePredicted() then return end
-    print(self.active)
-    if not self.active then return end
 
-    if self:GetNW2Bool("scanning") then
-        self:ScanOff()
-    else
-        self:ScanOn()
-    end
-end
-
-function SWEP:Reload()
-    if not IsFirstTimePredicted() then return end
-    if self.lastReload + 0.2 > CurTime() then return end
-    self.lastReload = CurTime()
-
-    if self.active then
+    if self:GetNW2Bool("active") then
         self:TurnOff()
     else
         self:TurnOn()
@@ -101,28 +87,17 @@ function SWEP:Reload()
 end
 
 function SWEP:TurnOn()
-    self:SetSkin(1)
-    self.active = true
+    self.LoopId = self:StartLoopingSound("star_trek.sonic_driver_loop")
+    self:SetSkin(2)
+    self:SetNW2Bool("active", true)
 end
 
 function SWEP:TurnOff()
-    self:ScanOff()
-    self:SetSkin(0)
-    self.active = false
-end
-
-function SWEP:ScanOn()
-    self.LoopId = self:StartLoopingSound("star_trek.sonic_driver_loop")
-    self:SetSkin(2)
-    self:SetNW2Bool("scanning", true)
-end
-
-function SWEP:ScanOff()
     if isnumber(self.LoopId) then
         self:StopLoopingSound(self.LoopId)
         self:EmitSound("guusconl/startrek/tng_fed_engidevice_end_01.mp3")
         self.LoopId = nil
     end
     self:SetSkin(1)
-    self:SetNW2Bool("scanning", false)
+    self:SetNW2Bool("active", false)
 end
