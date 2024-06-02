@@ -17,7 +17,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-function SWEP:OnDrop()
+function SWEP:OnRemove()
     self:TurnOff()
 end
 

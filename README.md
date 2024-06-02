@@ -11,5 +11,6 @@
 [X] hyperspanner lightsaber, beam blue. impact sprite
     [X] Damage to player
 
-    When dying loop stay
-    oni swep base bug
+[ ] laser scalpel damage
+[X] When dying loop stay
+[ ] oni swep base bug
