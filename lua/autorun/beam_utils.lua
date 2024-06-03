@@ -109,6 +109,9 @@ if CLIENT then
 
 
         local startPos, endPos = beamUtils:getBeamPosses3rd(otherPly, wep)
+        if startPos == nil or endPos == nil then
+            return
+        end
         beamUtils:renderBeam(startPos, endPos, ply, wep)
     end
 

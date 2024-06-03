@@ -146,6 +146,20 @@ end)
 
 hook.Add("Star_Trek.Tricorder.AnalyseScanData", "Star_Trek.tools.hypospray_scan", function(tricorder, owner, scanData)
 
+    if isnumber(scanData.Health) and scanData.Health != 100 then
+
+        Star_Trek.Logs:AddEntry(tricorder, owner, "Medical attention: ", Star_Trek.LCARS.White, TEXT_ALIGN_LEFT)
+
+        if scanData.Health >= 75 then
+            Star_Trek.Logs:AddEntry(tricorder, owner, "Minor Dermal Abrasions", Star_Trek.LCARS.ColorGreen, TEXT_ALIGN_RIGHT)
+        elseif scanData.Health >= 20 then
+            Star_Trek.Logs:AddEntry(tricorder, owner, "Heavy Laceration", Star_Trek.LCARS.ColorOrange, TEXT_ALIGN_RIGHT)
+        else
+            Star_Trek.Logs:AddEntry(tricorder, owner, "Organ Damage", Star_Trek.LCARS.ColorRed, TEXT_ALIGN_RIGHT)
+        end
+    end
+
+
     if scanData.hypo_dose != nil then
         Star_Trek.Logs:AddEntry(tricorder, owner, "Current dosis:", Star_Trek.LCARS.White, TEXT_ALIGN_LEFT)
 
