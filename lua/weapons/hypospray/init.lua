@@ -35,18 +35,28 @@ function SWEP:PrimaryAttack()
     end
 end
 
-function SWEP:Heal()
+function SWEP:Heal(healOwner)
     local owner = self:GetOwner()
     if not IsValid(owner) then return end
+    local ply
 
-    local tr = owner:GetEyeTrace()
-    local ply = tr.Entity
+    if healOwner then
+        ply = owner
 
-    if not tr.Hit or not IsValid(ply) or not ply:IsPlayer() or tr.HitPos:Distance(owner:GetShootPos()) > 60 then return end
+    else
+        local tr = owner:GetEyeTrace()
+        ply = tr.Entity
+
+        if not tr.Hit or not IsValid(ply) or not ply:IsPlayer() or tr.HitPos:Distance(owner:GetShootPos()) > 60 then return end
+    end
     -- Trace is successful
 
     ply:ViewPunch(Angle(-0.3, 0, 0))
-    self:Animate(false)
+    if healOwner then
+        self:Animate(false, true)
+    else
+        self:Animate(false, false)
+    end
 
     if ply.healData == nil then
         ply.healData = {}
@@ -71,6 +81,14 @@ function SWEP:SecondaryAttack()
     end
 end
 
+function SWEP:Reload()
+    if not IsFirstTimePredicted() then return end
+    if self.lastDelay + self.maxDelay < CurTime() then
+        self:Heal(true)
+        self.lastDelay = CurTime()
+    end
+end
+
 function SWEP:Revive()
     local owner = self:GetOwner()
     if not IsValid(owner) then return end
@@ -84,12 +102,17 @@ function SWEP:Revive()
 end
 
 util.AddNetworkString("star_trek.tools.hypospray.animation")
-function SWEP:Animate(revive)
+function SWEP:Animate(revive, selfHeal)
     local owner = self:GetOwner()
     if not IsValid(owner) then return end
 
     owner:ViewPunch(Angle(-0.3, 0, 0))
-    self:SendWeaponAnim(ACT_VM_RECOIL1)
+    selfHeal = selfHeal or false
+    if selfHeal then
+        self:SendWeaponAnim(ACT_VM_DRAW)
+    else
+        self:SendWeaponAnim(ACT_VM_RECOIL1)
+    end
 
     net.Start("star_trek.tools.hypospray.animation")
     net.WriteEntity(self)
