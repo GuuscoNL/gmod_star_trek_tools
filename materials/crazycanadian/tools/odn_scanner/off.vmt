@@ -1,0 +1,12 @@
+"VertexlitGeneric"
+{
+	$basetexture "crazycanadian/tools/odn_scanner/lights"
+	
+	$envmap env_cubemap
+	$envmaptint "[ 0.2 0.2 0.2]"
+
+	$phong 1
+   	$phongexponent 10
+	$phongboost 20
+	$phongfresnelranges "[0 0.5 1]"
+}
