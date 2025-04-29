@@ -16,8 +16,8 @@ include("shared.lua")
 
 SWEP.Author         = "GuuscoNL"
 SWEP.Contact        = "Discord: guusconl"
-SWEP.Purpose        = "#TODO:"
-SWEP.Instructions   = "#TODO:"
+SWEP.Purpose        = "A specialized medical instrument used to create incisions in various tissues."
+SWEP.Instructions   = "Hold LMB to use. Will slightly hurt players and NPCs."
 SWEP.Category       = "Star Trek (Utilities)"
 
 SWEP.DrawAmmo       = false

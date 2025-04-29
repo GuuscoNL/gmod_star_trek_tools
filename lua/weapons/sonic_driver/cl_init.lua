@@ -17,8 +17,8 @@ include("shared.lua")
 
 SWEP.Author         = "GuuscoNL"
 SWEP.Contact        = "Discord: guusconl"
-SWEP.Purpose        = "#TODO:"
-SWEP.Instructions   = "#TODO:"
+SWEP.Purpose        = "A sonic driver was a standard tool used in the Federation during the 2360s."
+SWEP.Instructions   = "Press LMB to toggle."
 SWEP.Category       = "Star Trek (Utilities)"
 
 SWEP.DrawAmmo       = false

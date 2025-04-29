@@ -160,8 +160,8 @@ function SWEP:Think()
 
 
             -- draw debug balls
-            debugoverlay.Sphere(startPos, 1, 0.2, Color(255, 0, 0), false)
-            debugoverlay.Sphere(endPos, 1, 0.2 , Color(0, 255, 0), false)
+            -- debugoverlay.Sphere(startPos, 1, 0.2, Color(255, 0, 0), false)
+            -- debugoverlay.Sphere(endPos, 1, 0.2 , Color(0, 255, 0), false)
 
             tr = util.TraceLine({
                 start = startPos,

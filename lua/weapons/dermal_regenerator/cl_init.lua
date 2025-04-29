@@ -17,8 +17,8 @@ include("shared.lua")
 
 SWEP.Author         = "GuuscoNL"
 SWEP.Contact        = "Discord: guusconl"
-SWEP.Purpose        = "#TODO:"
-SWEP.Instructions   = "#TODO:"
+SWEP.Purpose        = "Heals minor skin wounds, such as cuts and burns."
+SWEP.Instructions   = "Hold LMB to use. Will only heal from 75% to 100% health."
 SWEP.Category       = "Star Trek (Utilities)"
 
 SWEP.DrawAmmo       = false

@@ -17,8 +17,8 @@ include("shared.lua")
 
 SWEP.Author         = "GuuscoNL"
 SWEP.Contact        = "Discord: guusconl"
-SWEP.Purpose        = "#TODO:"
-SWEP.Instructions   = "#TODO:"
+SWEP.Purpose        = "A High tech instrument used to diagnose, calibrate and repair circuits."
+SWEP.Instructions   = "Press LMB to toggle scanner."
 SWEP.Category       = "Star Trek (Utilities)"
 
 SWEP.DrawAmmo       = false

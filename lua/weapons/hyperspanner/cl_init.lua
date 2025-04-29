@@ -17,8 +17,8 @@ include("shared.lua")
 
 SWEP.Author         = "GuuscoNL"
 SWEP.Contact        = "Discord: guusconl"
-SWEP.Purpose        = "#TODO:"
-SWEP.Instructions   = "#TODO:"
+SWEP.Purpose        = "Hyperspanner is a tool used to repair the ship's systems."
+SWEP.Instructions   = "Hold LMB to use. Will hurt players and NPCs."
 SWEP.Category       = "Star Trek (Utilities)"
 
 SWEP.DrawAmmo       = false

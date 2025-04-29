@@ -17,8 +17,8 @@ include("shared.lua")
 
 SWEP.Author         = "GuuscoNL"
 SWEP.Contact        = "Discord: guusconl"
-SWEP.Purpose        = "#TODO:"
-SWEP.Instructions   = "#TODO:"
+SWEP.Purpose        = "Hyperspray is a medical device used to deliver medication or other substances into the body without the use of needles."
+SWEP.Instructions   = "Press LMB to use.\nPress R to inject yourself.\nPress RMB to revive player (If implemented by gamemode)\n\nWill slowly heal players over time. If they are below 20% health, it will heal faster. Use the tricorder to see how much ml poeple have in their system.\n\nWill not heal NPCs."
 SWEP.Category       = "Star Trek (Utilities)"
 
 SWEP.DrawAmmo       = false
