@@ -18,7 +18,7 @@ include("shared.lua")
 SWEP.Author         = "GuuscoNL"
 SWEP.Contact        = "Discord: guusconl"
 SWEP.Purpose        = "Seal wounds and promote healing."
-SWEP.Instructions   = "Hold LMB to use. Will only heal from 25% to 75% health."
+SWEP.Instructions   = "Hold LMB to use. Will only heal from 25% to 75% health. Will give an error sound if not within range. Will not heal NPCs."
 SWEP.Category       = "Star Trek (Utilities)"
 
 SWEP.DrawAmmo       = false
