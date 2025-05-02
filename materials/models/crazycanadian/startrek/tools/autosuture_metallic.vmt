@@ -1,0 +1,17 @@
+VertexLitGeneric
+{
+	$basetexture "models/crazycanadian/startrek/tools/autosuture_d"
+	$bumpmap "models/crazycanadian/startrek/tools/autosuture_n"
+	$surfaceprop Plastic
+
+	$envmap "env_cubemap"
+	$normalmapalphaenvmapmask 1
+	$envmaptint "[0.25 0.25 0.25]"
+	$envmapfresnel 0.9
+
+	$phong 1
+	$phongfresnelranges "[0.1 0.55 0.5]"
+	$phongexponent 10
+	$phongboost 20
+	$phongalbedoboost 0
+}
