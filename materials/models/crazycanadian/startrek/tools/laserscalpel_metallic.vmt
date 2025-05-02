@@ -1,7 +1,7 @@
 VertexLitGeneric
 {
-	$basetexture "../addons/startrekpropsandtools/materials/models/crazycanadian/startrek/tools/laserscalpel_metallic_d"
-	$bumpmap "../addons/startrekpropsandtools/materials/models/crazycanadian/startrek/tools/laserscalpel_metallic_n"
+	$basetexture "models/crazycanadian/startrek/tools/laserscalpel_d"
+	$bumpmap "models/crazycanadian/startrek/tools/laserscalpel_n"
 	$surfaceprop Metal
 	$ssbump 1
 
