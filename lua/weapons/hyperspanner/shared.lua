@@ -23,7 +23,7 @@ SWEP.Slot = 3
 SWEP.SlotPos = 0
 
 SWEP.ViewModel = "models/weapons/v_pistol.mdl"
-SWEP.WorldModel = "models/crazycanadian/star_trek/tools/hyperspanner/hyperspanner.mdl"
+SWEP.WorldModel = "models/crazycanadian/startrek/tools/hyperspanner.mdl"
 
 SWEP.HoldType = "revolver"
 
@@ -62,7 +62,7 @@ SWEP.BoneManip = {
     },
 }
 
-SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/hyperspanner/hyperspanner.mdl"
+SWEP.CustomViewModel = "models/crazycanadian/startrek/tools/hyperspanner.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector(3.6, -1.5, 2)
 SWEP.CustomViewModelAngle = Angle(-103, -10, -90)

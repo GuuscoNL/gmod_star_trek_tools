@@ -23,7 +23,7 @@ SWEP.Slot = 3
 SWEP.SlotPos = 0
 
 SWEP.ViewModel = "models/weapons/v_pistol.mdl"
-SWEP.WorldModel = "models/crazycanadian/star_trek/tools/laser_scalpel/laser_scalpel.mdl"
+SWEP.WorldModel = "models/crazycanadian/startrek/tools/laserscalpel.mdl"
 
 SWEP.HoldType = "revolver"
 
@@ -58,7 +58,7 @@ SWEP.BoneManip = {
     },
 }
 
-SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/laser_scalpel/laser_scalpel.mdl"
+SWEP.CustomViewModel = "models/crazycanadian/startrek/tools/laserscalpel.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector(4, -2, -0.5)
 SWEP.CustomViewModelAngle = Angle(-85, -10, -90)

@@ -1,7 +1,0 @@
-Patch
-{
-	include materials/crazycanadian/tools/sonicdriver/lights.vmt
-	replace {
-		$basetexturetransform "center 1 1 scale 1 1 rotate 0 translate 0.33 0"
-	}
-}

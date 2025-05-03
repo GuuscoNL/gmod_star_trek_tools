@@ -23,7 +23,7 @@ SWEP.Slot = 3
 SWEP.SlotPos = 0
 
 SWEP.ViewModel = "models/weapons/v_pistol.mdl"
-SWEP.WorldModel = "models/crazycanadian/star_trek/tools/hypospray/hypospray.mdl"
+SWEP.WorldModel = "models/crazycanadian/startrek/tools/hypospray.mdl"
 
 SWEP.HoldType = "pistol"
 
@@ -59,7 +59,7 @@ SWEP.BoneManip = {
     },
 }
 
-SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/hypospray/hypospray.mdl"
+SWEP.CustomViewModel = "models/crazycanadian/startrek/tools/hypospray.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector(4.4, -1.5, -1)
 SWEP.CustomViewModelAngle = Angle(180, -90, -20)

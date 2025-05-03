@@ -1,0 +1,16 @@
+VertexLitGeneric
+{
+	$basetexture "models/crazycanadian/startrek/tools/sonicdriver_d"
+	$bumpmap "models/crazycanadian/startrek/tools/sonicdriver_n"
+	$surfaceprop Plastic
+
+	$envmap "env_cubemap"
+	$normalmapalphaenvmapmask 1
+	$envmaptint "[0.03 0.03 0.03]"
+	$envmapfresnel 0.9
+
+	$phong 1
+	$phongfresnelranges "[0 0.5 1]"
+	$phongexponent 20
+	$phongboost 5
+}
