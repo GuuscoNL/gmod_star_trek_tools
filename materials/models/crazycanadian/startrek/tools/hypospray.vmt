@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+	$basetexture "models/crazycanadian/startrek/tools/hypospray_d"
+	$bumpmap "models/crazycanadian/startrek/tools/hypospray_n"
+
+	$envmap "env_cubemap"
+	$normalmapalphaenvmapmask 1
+	$envmaptint "[0.1 0.1 0.1]"
+	$envmapfresnel 0.9
+
+	$phong 1
+	$phongfresnelranges "[0 0.5 1]"
+	$phongexponent 20
+	$phongboost 5
+}
