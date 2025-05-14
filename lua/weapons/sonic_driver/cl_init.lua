@@ -114,13 +114,13 @@ hook.Add("PostDrawOpaqueRenderables", "sonic_driver_draw_effects", function()
 
     -- Check if the player is in a first-person view
     local wep = ply:GetActiveWeapon()
-    if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("scanning") then
+    if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("active") then
 
         local vm = ply:GetViewModel()
 
         if IsValid(vm) then
-            local offset = vm:GetBonePosition(vm:LookupBone("ValveBiped.Bip01_R_Finger01"))
-            local offset1 = Vector(0,0.4, 1.6)
+            local offset = vm:GetBonePosition(vm:LookupBone("ValveBiped.Bip01_R_Hand"))
+            local offset1 = Vector(4.8, 0.2, 4)
             offset1:Rotate(ply:GetAngles())
 
             cam.Start3D()
@@ -141,8 +141,8 @@ hook.Add("PostDrawOpaqueRenderables", "sonic_driver_draw_effects", function()
 
         wep = OtherPly:GetActiveWeapon()
 
-        if IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("scanning") then
-            local bone_matrix = OtherPly:GetBoneMatrix(OtherPly:LookupBone("ValveBiped.Bip01_R_Finger01"))
+        if IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("active") then
+            local bone_matrix = OtherPly:GetBoneMatrix(OtherPly:LookupBone("ValveBiped.Bip01_R_Hand"))
 
             if bone_matrix == nil then
                 continue
@@ -150,7 +150,7 @@ hook.Add("PostDrawOpaqueRenderables", "sonic_driver_draw_effects", function()
 
             local offset = bone_matrix:GetTranslation()
 
-            local offset1 = Vector(7, 2.8, -1)
+            local offset1 = Vector(7.5, -1.5, -3.5)--Vector(7, 2.8, -1)
             offset1:Rotate(bone_matrix:GetAngles())
 
             cam.Start3D()

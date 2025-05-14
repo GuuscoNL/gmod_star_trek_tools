@@ -68,7 +68,6 @@ SWEP.CustomWorldModelAngle = Angle(-40, 180, 180)
 SWEP.CustomWorldModelScale = 1
 
 SWEP.active = false
-SWEP.scanning = false
 SWEP.lastReload = 0
 
 function SWEP:InitializeCustom()
