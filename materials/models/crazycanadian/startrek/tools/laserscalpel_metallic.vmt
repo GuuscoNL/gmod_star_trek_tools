@@ -1,0 +1,20 @@
+VertexLitGeneric
+{
+	$basetexture "models/crazycanadian/startrek/tools/laserscalpel_d"
+	$bumpmap "models/crazycanadian/startrek/tools/laserscalpel_n"
+	$surfaceprop Metal
+	$ssbump 1
+
+	$envmap "env_cubemap"
+	$normalmapalphaenvmapmask 1
+	$envmaptint "[0.21 0.21 0.21]"
+	$envmapcontrast 1
+	$envmapfresnel 1
+
+	$phong 1
+	$phongfresnelranges "[0.65 0.82 1]"
+	$phongtint "[0.45 0.45 0.45]"
+	$phongdisablehalflambert 1
+	$phongexponent 32
+	$phongboost 32
+}
