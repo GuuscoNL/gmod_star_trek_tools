@@ -77,9 +77,26 @@ function SWEP:InitializeCustom()
 end
 
 function SWEP:TurnOn()
-    self.LoopId = self:StartLoopingSound("star_trek.sonic_driver_loop")
-    self:SetSkin(2)
+    -- self.LoopId = self:StartLoopingSound("star_trek.sonic_driver_loop")
+    self:SetSkin(1)
     self:SetNW2Bool("active", true)
+end
+
+function SWEP:StartRepair()
+    if isnumber(self.LoopId) then
+        return -- already repairing
+    end
+    self.LoopId = self:StartLoopingSound("star_trek.sonic_driver_repair_loop")
+    self:SetSkin(2)
+end
+
+function SWEP:StopRepair()
+    if not isnumber(self.LoopId) then
+        return -- not repairing
+    end
+    self:StopLoopingSound(self.LoopId)
+    self.LoopId = nil
+    self:SetSkin(1)
 end
 
 function SWEP:TurnOff()
@@ -104,7 +121,12 @@ function SWEP:Think()
                 filter = owner,
             })
             if tr.Hit and tr.Entity:IsValid() then
-                hook.Run("Star_Trek.tools.sonic_driver.trace_hit", owner, self, tr.Entity, tr.HitPos)
+                local should_repair = hook.Run("Star_Trek.tools.sonic_driver.trace_hit", owner, self, tr.Entity, tr.HitPos)
+                if should_repair ~= false then
+                    self:StartRepair()
+                else
+                    self:StopRepair()
+                end
             end
         end
 
