@@ -132,7 +132,6 @@ function SWEP:Think()
         end
 
 
-print(self.active)
         if owner:KeyDown(IN_ATTACK) then
             if not self.active then
                 self:TurnOn()
