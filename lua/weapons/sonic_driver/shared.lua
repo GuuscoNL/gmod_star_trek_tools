@@ -69,20 +69,11 @@ SWEP.CustomWorldModelScale = 1
 
 SWEP.active = false
 SWEP.lastReload = 0
+SWEP.Range = 50
 
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNW2Bool("active", false)
-end
-
-function SWEP:PrimaryAttack()
-    if not IsFirstTimePredicted() then return end
-
-    if self:GetNW2Bool("active") then
-        self:TurnOff()
-    else
-        self:TurnOn()
-    end
 end
 
 function SWEP:TurnOn()
@@ -99,4 +90,34 @@ function SWEP:TurnOff()
     end
     self:SetSkin(1)
     self:SetNW2Bool("active", false)
+end
+
+function SWEP:Think()
+    if SERVER then
+
+        local owner = self:GetOwner()
+        if self:GetNW2Bool("active") then
+
+            local tr = util.TraceLine({
+                start = owner:GetShootPos(),
+                endpos = owner:GetShootPos() + owner:GetAimVector() * self.Range,
+                filter = owner,
+            })
+            if tr.Hit and tr.Entity:IsValid() then
+                hook.Run("Star_Trek.tools.sonic_driver.trace_hit", owner, self, tr.Entity, tr.HitPos)
+            end
+        end
+
+
+
+        if owner:KeyDown(IN_ATTACK) then
+            if not self:GetNW2Bool("active") then
+                self:TurnOn()
+            end
+        else
+            if self:GetNW2Bool("active") then
+                self:TurnOff()
+            end
+        end
+    end
 end
