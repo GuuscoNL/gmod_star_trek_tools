@@ -88,7 +88,7 @@ function SWEP:TurnOff()
         self:EmitSound("guusconl/startrek/tng_fed_engidevice_end_01.mp3")
         self.LoopId = nil
     end
-    self:SetSkin(1)
+    self:SetSkin(0)
     self:SetNW2Bool("active", false)
 end
 
