@@ -114,7 +114,7 @@ hook.Add("PostDrawOpaqueRenderables", "sonic_driver_draw_effects", function()
 
     -- Check if the player is in a first-person view
     local wep = ply:GetActiveWeapon()
-    if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("active") then
+    if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("repairing") then
 
         local vm = ply:GetViewModel()
 
@@ -141,7 +141,7 @@ hook.Add("PostDrawOpaqueRenderables", "sonic_driver_draw_effects", function()
 
         wep = OtherPly:GetActiveWeapon()
 
-        if IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("active") then
+        if IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("repairing") then
             local bone_matrix = OtherPly:GetBoneMatrix(OtherPly:LookupBone("ValveBiped.Bip01_R_Hand"))
 
             if bone_matrix == nil then

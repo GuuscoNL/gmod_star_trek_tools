@@ -69,53 +69,76 @@ SWEP.CustomWorldModelScale = 1
 
 SWEP.active = false
 SWEP.lastReload = 0
-SWEP.Range = 50
+SWEP.Range = 55
+SWEP.IsRepairing = false
 
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
-    self:SetNW2Bool("active", false)
+    self:SetNW2Bool("repairing", false)
 end
 
-function SWEP:TurnOn()
+function SWEP:StartRepairing()
     self.LoopId = self:StartLoopingSound("star_trek.sonic_driver_loop")
     self:SetSkin(2)
-    self:SetNW2Bool("active", true)
+    self.IsRepairing = true
+    self:SetNW2Bool("repairing", true)
 end
 
-function SWEP:TurnOff()
+function SWEP:StopRepairing()
     if isnumber(self.LoopId) then
         self:StopLoopingSound(self.LoopId)
         self:EmitSound("guusconl/startrek/tng_fed_engidevice_end_01.mp3")
         self.LoopId = nil
     end
+    self.IsRepairing = false
     self:SetSkin(1)
-    self:SetNW2Bool("active", false)
+    self:SetNW2Bool("repairing", false)
+end
+
+function SWEP:TurnOn()
+    self:SetSkin(1)
+    self.active = true
+end
+
+function SWEP:TurnOff()
+    self.active = false
+    self:StopRepairing()
+    self:SetSkin(0)
 end
 
 function SWEP:Think()
     if SERVER then
 
         local owner = self:GetOwner()
-        if self:GetNW2Bool("active") then
+        if self.active then
 
             local tr = util.TraceLine({
                 start = owner:GetShootPos(),
                 endpos = owner:GetShootPos() + owner:GetAimVector() * self.Range,
                 filter = owner,
             })
+            local repairing = false
             if tr.Hit and tr.Entity:IsValid() then
-                hook.Run("Star_Trek.tools.sonic_driver.trace_hit", owner, self, tr.Entity, tr.HitPos)
+                repairing = hook.Run("Star_Trek.tools.sonic_driver.trace_hit", owner, self, tr.Entity, tr.HitPos)
+            end
+            repairing = repairing or false
+            if self.IsRepairing ~= repairing then
+                if self.IsRepairing == false then
+                    self:StartRepairing()
+                else
+                    self:StopRepairing()
+                end
             end
         end
 
 
-
+print(self.active)
         if owner:KeyDown(IN_ATTACK) then
-            if not self:GetNW2Bool("active") then
+            if not self.active then
                 self:TurnOn()
             end
         else
-            if self:GetNW2Bool("active") then
+            if self.active then
                 self:TurnOff()
             end
         end
