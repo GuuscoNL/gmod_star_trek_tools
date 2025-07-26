@@ -119,6 +119,8 @@ SWEP.DECAL_DELAY = 0.05
 
 SWEP.lastDecal = 0
 
+SWEP.playerDamage = 1
+
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(20)
     self:SetNW2Bool("active", false)
@@ -169,12 +171,12 @@ function SWEP:Think()
                 filter = owner,
             })
 
-            if tr.Hit and tr.Entity:IsPlayer() then
-                net.Start("star_trek.tools.hyperspanner.take_damage")
+            if tr.Hit then
+                net.Start("star_trek.tools.hyperspanner.trace_hit")
                 net.WritePlayer(owner)
                 net.WriteEntity(self)
-                net.WritePlayer(tr.Entity)
-                net.WriteUInt(1, 8)
+                net.WriteEntity(tr.Entity)
+                net.WriteVector(tr.HitPos)
                 net.SendToServer()
             end
 

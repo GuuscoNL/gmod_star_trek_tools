@@ -39,20 +39,24 @@ hook.Add( "PlayerSwitchWeapon", "Star_Trek.tools.hyperspanner_switch", function(
     end
 end )
 
-util.AddNetworkString("star_trek.tools.hyperspanner.take_damage")
-net.Receive("star_trek.tools.hyperspanner.take_damage", function()
+util.AddNetworkString("star_trek.tools.hyperspanner.trace_hit")
+net.Receive("star_trek.tools.hyperspanner.trace_hit", function()
     local attacker = net.ReadPlayer()
     local weapon = net.ReadEntity()
-    local victim = net.ReadPlayer()
-    local amount = net.ReadUInt(8)
+    local entityHit = net.ReadEntity()
+    local hitPos = net.ReadVector()
 
-    if not IsValid(victim) then return end
+    if not IsValid(entityHit) then return end
+    print(not nil)
+    if not hook.Run("Star_Trek.tools.hyperspanner.trace_hit", attacker, weapon, entityHit, hitPos) then
+        local damInfo = DamageInfo()
+        damInfo:SetAttacker(attacker)
+        damInfo:SetInflictor(weapon)
+        damInfo:SetDamage(weapon.playerDamage)
+        damInfo:SetDamageType(DMG_ENERGYBEAM)
+        damInfo:SetDamagePosition(hitPos)
+        
+        entityHit:TakeDamageInfo(damInfo)
+    end
 
-    local damInfo = DamageInfo()
-    damInfo:SetAttacker(attacker)
-    damInfo:SetInflictor(weapon)
-    damInfo:SetDamage(amount)
-    damInfo:SetDamageType(DMG_ENERGYBEAM)
-
-    victim:TakeDamageInfo(damInfo)
 end)
