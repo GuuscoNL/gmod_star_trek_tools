@@ -39,3 +39,23 @@ hook.Add("PlayerCanPickupWeapon", "Star_Trek.tools.laser_scalpel_pickup", functi
         return false
     end
 end)
+
+util.AddNetworkString("star_trek.tools.laser_scalpel.take_damage")
+net.Receive("star_trek.tools.laser_scalpel.take_damage", function()
+    local attacker = net.ReadPlayer()
+    local weapon = net.ReadEntity()
+    local entityHit = net.ReadEntity()
+    local hitPos = net.ReadVector()
+
+
+    if not IsValid(entityHit) or not entityHit:IsPlayer() then return end
+    
+    local damInfo = DamageInfo()
+    damInfo:SetAttacker(attacker)
+    damInfo:SetInflictor(weapon)
+    damInfo:SetDamage(weapon.playerDamage)
+    damInfo:SetDamageType(DMG_ENERGYBEAM)
+    damInfo:SetDamagePosition(hitPos)
+    
+    entityHit:TakeDamageInfo(damInfo)
+end)

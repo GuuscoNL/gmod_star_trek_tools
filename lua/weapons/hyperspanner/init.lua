@@ -47,7 +47,7 @@ net.Receive("star_trek.tools.hyperspanner.trace_hit", function()
     local hitPos = net.ReadVector()
 
     if not IsValid(entityHit) then return end
-    print(not nil)
+
     if not hook.Run("Star_Trek.tools.hyperspanner.trace_hit", attacker, weapon, entityHit, hitPos) then
         local damInfo = DamageInfo()
         damInfo:SetAttacker(attacker)

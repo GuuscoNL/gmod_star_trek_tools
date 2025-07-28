@@ -105,6 +105,7 @@ SWEP.DECAL_COLOUR = Color(0, 0, 0)
 SWEP.DECAL_DELAY = 0.08
 
 SWEP.lastDecal = 0
+SWEP.playerDamage = 1
 
 
 function SWEP:InitializeCustom()
@@ -171,12 +172,12 @@ function SWEP:Think()
                 filter = owner,
             })
 
-            if tr.Hit and tr.Entity:IsPlayer() then
-                net.Start("star_trek.tools.hyperspanner.take_damage")
+            if tr.Hit then
+                net.Start("star_trek.tools.laser_scalpel.take_damage")
                 net.WritePlayer(owner)
                 net.WriteEntity(self)
-                net.WritePlayer(tr.Entity)
-                net.WriteUInt(1, 8)
+                net.WriteEntity(tr.Entity)
+                net.WriteVector(tr.HitPos)
                 net.SendToServer()
             end
 
