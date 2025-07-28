@@ -155,9 +155,9 @@ function SWEP:Think()
 
             local startPos, endPos
             if LocalPlayer():ShouldDrawLocalPlayer() then
-                startPos, endPos = beamUtils:getBeamPosses3rd(owner, self)
+                startPos, endPos = StarTrekToolsBeamUtils:getBeamPosses3rd(owner, self)
             else
-                startPos, endPos = beamUtils:getBeamPossesFPS(owner, self)
+                startPos, endPos = StarTrekToolsBeamUtils:getBeamPossesFPS(owner, self)
             end
 
 

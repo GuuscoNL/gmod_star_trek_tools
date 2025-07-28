@@ -106,5 +106,5 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
 end
 
 hook.Add("PostDrawOpaqueRenderables", "laser_scalpel_draw_effects", function()
-    beamUtils:handleBeamEffects("laser_scalpel")
+    StarTrekToolsBeamUtils:handleBeamEffects("laser_scalpel")
 end)

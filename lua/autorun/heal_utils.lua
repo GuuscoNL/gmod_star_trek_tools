@@ -12,14 +12,14 @@
 --       heal_utils | shared         --
 ---------------------------------------
 
-HealUtils = {}
+StarTrekToolsHealUtils = {}
 
-function HealUtils:HealThink(wep)
+function StarTrekToolsHealUtils:HealThink(wep)
     local owner = wep:GetOwner()
     if not IsFirstTimePredicted() then return end
     if not IsValid(owner) then return end
     if CLIENT then
-        HealUtils:HandleHealing(wep, owner)
+        StarTrekToolsHealUtils:HandleHealing(wep, owner)
             -- update the delay
         if wep.healDelay > 0 then
             wep.healDelay = wep.healDelay - FrameTime()
@@ -38,14 +38,14 @@ function HealUtils:HealThink(wep)
     end
 end
 
-function HealUtils:HandleHealing(wep, owner)
+function StarTrekToolsHealUtils:HandleHealing(wep, owner)
     if wep:GetNW2Bool("active") and wep.healDelay <= 0 then
         local startPos, endPos
 
         if LocalPlayer():ShouldDrawLocalPlayer() then
-            startPos, endPos = beamUtils:getBeamPosses3rd(owner, wep)
+            startPos, endPos = StarTrekToolsBeamUtils:getBeamPosses3rd(owner, wep)
         else
-            startPos, endPos = beamUtils:getBeamPossesFPS(owner, wep)
+            startPos, endPos = StarTrekToolsBeamUtils:getBeamPossesFPS(owner, wep)
         end
         tr = util.TraceLine({
             start = startPos,
@@ -96,10 +96,10 @@ if SERVER then
     net.Receive("star_trek.tools.heal_util.remove_decals", function()
         local ply = net.ReadPlayer()
         if not IsValid(ply) then return end
-        HealUtils:RemoveDecals(ply)
+        StarTrekToolsHealUtils:RemoveDecals(ply)
     end)
 
-    function HealUtils:RemoveDecals(ply)
+    function StarTrekToolsHealUtils:RemoveDecals(ply)
         net.Start("star_trek.tools.heal_util.remove_decals")
         net.WritePlayer(ply)
         net.Broadcast()

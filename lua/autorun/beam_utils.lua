@@ -13,10 +13,10 @@
 ---------------------------------------
 
 if CLIENT then
-    beamUtils = {}
+    StarTrekToolsBeamUtils = {}
 
-    function beamUtils:handleBeamEffects(className)
-        beamUtils:handleBeamFPS(className)
+    function StarTrekToolsBeamUtils:handleBeamEffects(className)
+        StarTrekToolsBeamUtils:handleBeamFPS(className)
 
         local ply = LocalPlayer()
         for _, otherPly in player.Iterator() do
@@ -26,11 +26,11 @@ if CLIENT then
                 continue
             end
 
-            beamUtils:handleBeam3rd(className, otherPly)
+            StarTrekToolsBeamUtils:handleBeam3rd(className, otherPly)
         end
     end
 
-    function beamUtils:handleBeamFPS(className)
+    function StarTrekToolsBeamUtils:handleBeamFPS(className)
         local ply = LocalPlayer()
         local wep = ply:GetActiveWeapon()
 
@@ -43,16 +43,16 @@ if CLIENT then
             return
         end
 
-        local startPos, endPos = beamUtils:getBeamPossesFPS(ply, wep)
+        local startPos, endPos = StarTrekToolsBeamUtils:getBeamPossesFPS(ply, wep)
 
         if startPos == nil or endPos == nil then
             return
         end
-        beamUtils:renderBeam(startPos, endPos, ply, wep)
+        StarTrekToolsBeamUtils:renderBeam(startPos, endPos, ply, wep)
 
     end
 
-    function beamUtils:getBeamPossesFPS(ply, wep)
+    function StarTrekToolsBeamUtils:getBeamPossesFPS(ply, wep)
         local vm = ply:GetViewModel()
 
         if not IsValid(vm) then return nil, nil end
@@ -77,7 +77,7 @@ if CLIENT then
         return startPos, endPos
     end
 
-    function beamUtils:getBeamPosses3rd(ply, wep)
+    function StarTrekToolsBeamUtils:getBeamPosses3rd(ply, wep)
         local boneMatrix = ply:GetBoneMatrix(ply:LookupBone(wep.CustomWorldModelBone))
         if boneMatrix == nil then
             return
@@ -100,7 +100,7 @@ if CLIENT then
         return startPos, endPos
     end
 
-    function beamUtils:handleBeam3rd(className, otherPly)
+    function StarTrekToolsBeamUtils:handleBeam3rd(className, otherPly)
         local wep = otherPly:GetActiveWeapon()
 
         if not IsValid(wep) or wep:GetClass() != className or not wep:GetNW2Bool("active") then
@@ -108,14 +108,14 @@ if CLIENT then
         end
 
 
-        local startPos, endPos = beamUtils:getBeamPosses3rd(otherPly, wep)
+        local startPos, endPos = StarTrekToolsBeamUtils:getBeamPosses3rd(otherPly, wep)
         if startPos == nil or endPos == nil then
             return
         end
-        beamUtils:renderBeam(startPos, endPos, ply, wep)
+        StarTrekToolsBeamUtils:renderBeam(startPos, endPos, ply, wep)
     end
 
-    function beamUtils:renderBeam(startPos, endPos, filter, wep)
+    function StarTrekToolsBeamUtils:renderBeam(startPos, endPos, filter, wep)
 
         local tr = util.TraceLine({
             start = startPos,
