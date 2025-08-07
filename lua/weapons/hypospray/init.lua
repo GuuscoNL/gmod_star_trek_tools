@@ -49,6 +49,13 @@ function SWEP:Heal(healOwner)
 
         if not tr.Hit or not IsValid(ply) or not ply:IsPlayer() or tr.HitPos:Distance(owner:GetShootPos()) > 60 then return end
     end
+
+    if hook.Run("star_trek.tools.hypospray.ShouldHeal", owner, ply) == false then
+        print("NOPE")
+
+        return
+    end
+    print("I AM DOING IT")
     -- Trace is successful
 
     ply:ViewPunch(Angle(-0.3, 0, 0))
