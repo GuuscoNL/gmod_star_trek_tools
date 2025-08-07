@@ -73,7 +73,7 @@ SWEP.Range = 55
 SWEP.IsRepairing = false
 
 function SWEP:InitializeCustom()
-    self:SetDeploySpeed(20)
+    self:SetDeploySpeed(2)
     self:SetNW2Bool("repairing", false)
 end
 

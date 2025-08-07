@@ -102,7 +102,7 @@ SWEP.BEAM_3RD_LENGTH = 15
 SWEP.USE_DECAL = false
 
 function SWEP:InitializeCustom()
-    self:SetDeploySpeed(20)
+    self:SetDeploySpeed(2)
     self:SetNWString("bodyGroups", "00")
     self:SetNW2Bool("active", false)
 end

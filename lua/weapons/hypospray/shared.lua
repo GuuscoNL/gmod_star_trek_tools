@@ -72,5 +72,5 @@ SWEP.CustomWorldModelAngle = Angle(15, 90, 170)
 SWEP.CustomWorldModelScale = 1
 
 function SWEP:InitializeCustom()
-    self:SetDeploySpeed(20)
+    self:SetDeploySpeed(2)
 end

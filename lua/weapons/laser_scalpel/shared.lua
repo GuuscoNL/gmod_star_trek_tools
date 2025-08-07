@@ -109,7 +109,7 @@ SWEP.playerDamage = 1
 
 
 function SWEP:InitializeCustom()
-    self:SetDeploySpeed(20)
+    self:SetDeploySpeed(2)
     self:SetNW2Bool("active", false)
 end
 
