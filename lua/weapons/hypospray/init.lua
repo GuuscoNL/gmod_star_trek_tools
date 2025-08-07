@@ -51,11 +51,8 @@ function SWEP:Heal(healOwner)
     end
 
     if hook.Run("star_trek.tools.hypospray.ShouldHeal", owner, ply) == false then
-        print("NOPE")
-
         return
     end
-    print("I AM DOING IT")
     -- Trace is successful
 
     ply:ViewPunch(Angle(-0.3, 0, 0))
