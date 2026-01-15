@@ -76,16 +76,22 @@ function SWEP:InitializeCustom()
     self:SetNW2Bool("active", false)
 end
 
-function SWEP:PrimaryAttack()
+function SWEP:Think()
     if not IsFirstTimePredicted() then return end
 
-    if self:GetNW2Bool("active") then
-        self:TurnOff()
-    else
-        if self.LastTurnedOff + self.delay < CurTime() then
+    local owner = self:GetOwner()
+    if not IsValid(owner) then return end
+
+    if owner:KeyDown(IN_ATTACK) then
+        if (self.LastTurnedOff + self.delay < CurTime()) and not self:GetNW2Bool("active") then
             self:TurnOn()
         end
+    else
+        if self:GetNW2Bool("active") then
+            self:TurnOff()
+        end
     end
+
 end
 
 function SWEP:TurnOn()
