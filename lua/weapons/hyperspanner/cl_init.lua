@@ -107,5 +107,6 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
 end
 
 hook.Add("PostDrawOpaqueRenderables", "hyperspanner_draw_effects", function()
+    if StarTrekToolsBeamUtils == nil then return end
     StarTrekToolsBeamUtils:handleBeamEffects("hyperspanner")
 end)

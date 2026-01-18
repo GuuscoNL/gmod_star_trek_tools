@@ -107,5 +107,6 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
 end
 
 hook.Add("PostDrawOpaqueRenderables", "dermal_regenerator_draw_effects", function()
+    if StarTrekToolsBeamUtils == nil then return end
     StarTrekToolsBeamUtils:handleBeamEffects("dermal_regenerator")
 end)
