@@ -20,7 +20,7 @@ include("shared.lua")
 SWEP.lastDelay = 0
 SWEP.maxDelay = 0.5
 
-local DOSIS_DELAY_THRESHOLD = 20
+local DOSIS_DELAY_THRESHOLD = 15
 local DOSIS_DECAY_RATE = 0.1 -- per second
 local DOSIS_DELAY_LOW = 1.5
 local DOSIS_DELAY_HIGH = 5

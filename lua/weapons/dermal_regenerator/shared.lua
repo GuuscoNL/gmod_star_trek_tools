@@ -70,7 +70,7 @@ SWEP.CustomWorldModelOffset = Vector(4, -1.8, 0.3)
 SWEP.CustomWorldModelAngle = Angle(-80, -10, -90)
 SWEP.CustomWorldModelScale = 1
 
-SWEP.healSpeed = 2 -- Health points per second
+SWEP.healSpeed = 3 -- Health points per second
 SWEP.minHeal = .75
 SWEP.maxHeal = 1
 
