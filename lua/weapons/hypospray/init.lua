@@ -173,6 +173,10 @@ end)
 
 hook.Add("Star_Trek.Tricorder.AnalyseScanData", "Star_Trek.tools.hypospray_scan", function(tricorder, owner, scanData)
 
+    if not scanData.Alive then
+        return
+    end
+
     if isnumber(scanData.Health) and scanData.Health != 100 then
 
         Star_Trek.Logs:AddEntry(tricorder, owner, "Medical attention: ", Star_Trek.LCARS.White, TEXT_ALIGN_LEFT)
