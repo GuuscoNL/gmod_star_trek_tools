@@ -19,7 +19,7 @@ SWEP.PrintName = "Autosuture"
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
 
-SWEP.Slot = 3
+SWEP.Slot = 2
 SWEP.SlotPos = 0
 
 SWEP.ViewModel = "models/weapons/v_pistol.mdl"
