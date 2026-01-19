@@ -55,16 +55,19 @@ function StarTrekToolsHealUtils:HandleHealing(wep, owner)
 
         local ply = tr.Entity
         if not IsValid(ply) then return end
-        if tr.Hit and ply:IsPlayer() then
+        if tr.Hit and (ply:IsPlayer() or ply:IsNPC() or ply:IsNextBot())  then
             if ply:Health() < wep.minHeal * ply:GetMaxHealth() or ply:Health() >= wep.maxHeal * ply:GetMaxHealth() then
                 wep:EmitSound("star_trek.healed")
                 if ply:Health() >= ply:GetMaxHealth() then
-                    ply:RemoveAllDecals()
+                    net.Start("star_trek.tools.heal_util.remove_decals")
+                    net.WriteEntity(ply)
+                    net.SendToServer()
                 end
+                
             else
                 -- Tell the server to add health to the player
                 net.Start("star_trek.tools.heal_util.add_health")
-                net.WritePlayer(ply)
+                net.WriteEntity(ply)
                 net.WriteUInt(1, 8)
                 net.SendToServer()
 
@@ -76,32 +79,33 @@ function StarTrekToolsHealUtils:HandleHealing(wep, owner)
             wep.healDelay = 1 / wep.healSpeed
         end
     end
+
+    net.Receive("star_trek.tools.heal_util.remove_decals", function()
+        local ent = net.ReadEntity()
+        if not IsValid(ent) then return end
+        ent:RemoveAllDecals()
+    end)
 end
 
 if SERVER then
 
     util.AddNetworkString("star_trek.tools.heal_util.add_health")
     net.Receive("star_trek.tools.heal_util.add_health", function()
-        local ply = net.ReadPlayer()
+        local ent = net.ReadEntity()
         local amount = net.ReadUInt(8)
-        if not IsValid(ply) then return end
-
-        if ply:Health() >= ply:GetMaxHealth() then return end
-
-        ply:SetHealth(ply:Health() + amount)
+        if not IsValid(ent) then return end
+        if not (ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot()) then return end
+        
+        ent:SetHealth(ent:Health() + amount)
     end)
-
+    
     util.AddNetworkString("star_trek.tools.heal_util.remove_decals")
-
     net.Receive("star_trek.tools.heal_util.remove_decals", function()
-        local ply = net.ReadPlayer()
-        if not IsValid(ply) then return end
-        StarTrekToolsHealUtils:RemoveDecals(ply)
+        local ent = net.ReadEntity()
+        if not IsValid(ent) then return end
+        net.Start("star_trek.tools.heal_util.remove_decals")
+        net.WriteEntity(ent)
+        net.Broadcast()
     end)
 
-    function StarTrekToolsHealUtils:RemoveDecals(ply)
-        net.Start("star_trek.tools.heal_util.remove_decals")
-        net.WritePlayer(ply)
-        net.Broadcast()
-    end
 end
