@@ -73,4 +73,5 @@ SWEP.CustomWorldModelScale = 1
 
 function SWEP:InitializeCustom()
     self:SetDeploySpeed(2)
+    self:SetNWString("bodyGroups", "01")
 end

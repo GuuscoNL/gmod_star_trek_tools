@@ -23,7 +23,7 @@ SWEP.Slot = 3
 SWEP.SlotPos = 0
 
 SWEP.ViewModel = "models/weapons/v_pistol.mdl"
-SWEP.WorldModel = "models/crazycanadian/star_trek/tools/odn_scanner/odn_scanner.mdl"
+SWEP.WorldModel = "models/crazycanadian/startrek/tools/odn_scanner.mdl"
 
 SWEP.HoldType = "pistol"
 
@@ -55,7 +55,7 @@ SWEP.BoneManip = {
     },
 }
 
-SWEP.CustomViewModel = "models/crazycanadian/star_trek/tools/odn_scanner/odn_scanner.mdl"
+SWEP.CustomViewModel = "models/crazycanadian/startrek/tools/odn_scanner.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector(4, -2.1, -0.5)
 SWEP.CustomViewModelAngle = Angle(200, 0, 50)
@@ -91,7 +91,6 @@ function SWEP:Think()
             self:TurnOff()
         end
     end
-
 end
 
 function SWEP:TurnOn()
