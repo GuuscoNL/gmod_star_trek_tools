@@ -15,17 +15,16 @@
 include("shared.lua")
 
 
-SWEP.Author         = "GuuscoNL"
-SWEP.Contact        = "Discord: guusconl"
-SWEP.Purpose        = "A High tech instrument used to diagnose, calibrate and repair circuits."
-SWEP.Instructions   = "Press LMB to toggle scanner."
-SWEP.Category       = "Star Trek (Utilities)"
+SWEP.Author       = "GuuscoNL"
+SWEP.Contact      = "Discord: guusconl"
+SWEP.Purpose      = "A High tech instrument used to diagnose, calibrate and repair circuits."
+SWEP.Instructions = "Press LMB to toggle scanner."
+SWEP.Category     = "Star Trek (Utilities)"
 
-SWEP.DrawAmmo       = false
+SWEP.DrawAmmo     = false
 
 -- code from oni_swep_base :)
 function SWEP:DrawWorldModel(flags)
-
     local owner = self:GetOwner()
     if not IsValid(owner) then
         self:DrawModel(flags)
@@ -53,7 +52,8 @@ function SWEP:DrawWorldModel(flags)
         return
     end
 
-    local pos, ang = LocalToWorld(self.CustomWorldModelOffset, self.CustomWorldModelAngle, m:GetTranslation(), m:GetAngles())
+    local pos, ang = LocalToWorld(self.CustomWorldModelOffset, self.CustomWorldModelAngle, m:GetTranslation(),
+        m:GetAngles())
 
     self.CustomWorldModelEntity:SetPos(pos)
     self.CustomWorldModelEntity:SetAngles(ang)
@@ -68,8 +68,31 @@ function SWEP:DrawWorldModel(flags)
     end
 end
 
+function SWEP:CleanupViewModel()
+    local owner = LocalPlayer()
+    if not IsValid(owner) then
+        return
+    end
+
+    local vm = owner:GetViewModel()
+    if not IsValid(vm) then
+        return
+    end
+
+    if istable(self.BoneManip) then
+        self:ResetBoneMod(vm)
+    end
+
+    if IsValid(self.CustomViewModelEntity) then
+        self.CustomViewModelEntity:Remove()
+    end
+    vm:SetMaterial("")
+end
+
 function SWEP:PostDrawViewModel(vm, weapon, ply)
     self.IsViewModelRendering = true
+
+    vm:SetMaterial("debug/debugvertexcolor")
 
     if isstring(self.CustomViewModel) then
         if not IsValid(self.CustomViewModelEntity) then
@@ -90,7 +113,8 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
         if not m then
             return
         end
-        local pos, ang = LocalToWorld(self.CustomViewModelOffset, self.CustomViewModelAngle, m:GetTranslation(), m:GetAngles())
+        local pos, ang = LocalToWorld(self.CustomViewModelOffset, self.CustomViewModelAngle, m:GetTranslation(),
+            m:GetAngles())
 
         self.CustomViewModelEntity:SetPos(pos)
         self.CustomViewModelEntity:SetAngles(ang)
@@ -106,7 +130,6 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
     end
 end
 
-
 local SPRITE_MATERIAL = Material("sprites/light_glow02_add")
 local SPRITE_COLOUR = Color(110, 8, 8)
 
@@ -116,7 +139,6 @@ hook.Add("PostDrawOpaqueRenderables", "odn_scanner_draw_effects", function()
 
     -- Check if the player is in a first-person view
     if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "odn_scanner" and wep:GetNW2Bool("active") then
-
         local vm = ply:GetViewModel()
 
         if IsValid(vm) then
@@ -125,14 +147,13 @@ hook.Add("PostDrawOpaqueRenderables", "odn_scanner_draw_effects", function()
             offset1:Rotate(ply:GetAngles())
 
             cam.Start3D()
-                render.SetMaterial(SPRITE_MATERIAL)
-                render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
+            render.SetMaterial(SPRITE_MATERIAL)
+            render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
             cam.End3D()
         end
     end
 
     for _, otherPly in player.Iterator() do
-
         local index1 = otherPly:EntIndex()
         local index2 = ply:EntIndex()
 
@@ -150,10 +171,9 @@ hook.Add("PostDrawOpaqueRenderables", "odn_scanner_draw_effects", function()
             offset1:Rotate(bone_matrix:GetAngles())
 
             cam.Start3D()
-                render.SetMaterial(SPRITE_MATERIAL)
-                render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
+            render.SetMaterial(SPRITE_MATERIAL)
+            render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
             cam.End3D()
         end
     end
-
 end)

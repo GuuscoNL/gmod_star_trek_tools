@@ -15,17 +15,17 @@
 include("shared.lua")
 
 
-SWEP.Author         = "GuuscoNL"
-SWEP.Contact        = "Discord: guusconl"
-SWEP.Purpose        = "Seal wounds and promote healing."
-SWEP.Instructions   = "Hold LMB to use. Will only heal from 25% to 75% health. Will give an error sound if not within range. Will not heal NPCs."
-SWEP.Category       = "Star Trek (Utilities)"
+SWEP.Author       = "GuuscoNL"
+SWEP.Contact      = "Discord: guusconl"
+SWEP.Purpose      = "Seal wounds and promote healing."
+SWEP.Instructions =
+"Hold LMB to use. Will only heal from 25% to 75% health. Will give an error sound if not within range. Will not heal NPCs."
+SWEP.Category     = "Star Trek (Utilities)"
 
-SWEP.DrawAmmo       = false
+SWEP.DrawAmmo     = false
 
 -- code from oni_swep_base :)
 function SWEP:DrawWorldModel(flags)
-
     local owner = self:GetOwner()
     if not IsValid(owner) then
         self:DrawModel(flags)
@@ -53,7 +53,8 @@ function SWEP:DrawWorldModel(flags)
         return
     end
 
-    local pos, ang = LocalToWorld(self.CustomWorldModelOffset, self.CustomWorldModelAngle, m:GetTranslation(), m:GetAngles())
+    local pos, ang = LocalToWorld(self.CustomWorldModelOffset, self.CustomWorldModelAngle, m:GetTranslation(),
+        m:GetAngles())
 
     self.CustomWorldModelEntity:SetPos(pos)
     self.CustomWorldModelEntity:SetAngles(ang)
@@ -68,8 +69,31 @@ function SWEP:DrawWorldModel(flags)
     end
 end
 
+function SWEP:CleanupViewModel()
+    local owner = LocalPlayer()
+    if not IsValid(owner) then
+        return
+    end
+
+    local vm = owner:GetViewModel()
+    if not IsValid(vm) then
+        return
+    end
+
+    if istable(self.BoneManip) then
+        self:ResetBoneMod(vm)
+    end
+
+    if IsValid(self.CustomViewModelEntity) then
+        self.CustomViewModelEntity:Remove()
+    end
+    vm:SetMaterial("")
+end
+
 function SWEP:PostDrawViewModel(vm, weapon, ply)
     self.IsViewModelRendering = true
+
+    vm:SetMaterial("debug/debugvertexcolor")
 
     if isstring(self.CustomViewModel) then
         if not IsValid(self.CustomViewModelEntity) then
@@ -90,7 +114,8 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
         if not m then
             return
         end
-        local pos, ang = LocalToWorld(self.CustomViewModelOffset, self.CustomViewModelAngle, m:GetTranslation(), m:GetAngles())
+        local pos, ang = LocalToWorld(self.CustomViewModelOffset, self.CustomViewModelAngle, m:GetTranslation(),
+            m:GetAngles())
 
         self.CustomViewModelEntity:SetPos(pos)
         self.CustomViewModelEntity:SetAngles(ang)

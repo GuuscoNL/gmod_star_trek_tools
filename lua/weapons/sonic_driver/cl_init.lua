@@ -15,17 +15,16 @@
 include("shared.lua")
 
 
-SWEP.Author         = "GuuscoNL"
-SWEP.Contact        = "Discord: guusconl"
-SWEP.Purpose        = "A sonic driver was a standard tool used in the Federation during the 2360s."
-SWEP.Instructions   = "Press LMB to toggle."
-SWEP.Category       = "Star Trek (Utilities)"
+SWEP.Author       = "GuuscoNL"
+SWEP.Contact      = "Discord: guusconl"
+SWEP.Purpose      = "A sonic driver was a standard tool used in the Federation during the 2360s."
+SWEP.Instructions = "Press LMB to toggle."
+SWEP.Category     = "Star Trek (Utilities)"
 
-SWEP.DrawAmmo       = false
+SWEP.DrawAmmo     = false
 
 -- code from oni_swep_base :)
 function SWEP:DrawWorldModel(flags)
-
     local owner = self:GetOwner()
     if not IsValid(owner) then
         self:DrawModel(flags)
@@ -53,7 +52,8 @@ function SWEP:DrawWorldModel(flags)
         return
     end
 
-    local pos, ang = LocalToWorld(self.CustomWorldModelOffset, self.CustomWorldModelAngle, m:GetTranslation(), m:GetAngles())
+    local pos, ang = LocalToWorld(self.CustomWorldModelOffset, self.CustomWorldModelAngle, m:GetTranslation(),
+        m:GetAngles())
 
     self.CustomWorldModelEntity:SetPos(pos)
     self.CustomWorldModelEntity:SetAngles(ang)
@@ -68,8 +68,31 @@ function SWEP:DrawWorldModel(flags)
     end
 end
 
+function SWEP:CleanupViewModel()
+    local owner = LocalPlayer()
+    if not IsValid(owner) then
+        return
+    end
+
+    local vm = owner:GetViewModel()
+    if not IsValid(vm) then
+        return
+    end
+
+    if istable(self.BoneManip) then
+        self:ResetBoneMod(vm)
+    end
+
+    if IsValid(self.CustomViewModelEntity) then
+        self.CustomViewModelEntity:Remove()
+    end
+    vm:SetMaterial("")
+end
+
 function SWEP:PostDrawViewModel(vm, weapon, ply)
     self.IsViewModelRendering = true
+
+    vm:SetMaterial("debug/debugvertexcolor")
 
     if isstring(self.CustomViewModel) then
         if not IsValid(self.CustomViewModelEntity) then
@@ -90,7 +113,8 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
         if not m then
             return
         end
-        local pos, ang = LocalToWorld(self.CustomViewModelOffset, self.CustomViewModelAngle, m:GetTranslation(), m:GetAngles())
+        local pos, ang = LocalToWorld(self.CustomViewModelOffset, self.CustomViewModelAngle, m:GetTranslation(),
+            m:GetAngles())
 
         self.CustomViewModelEntity:SetPos(pos)
         self.CustomViewModelEntity:SetAngles(ang)
@@ -115,7 +139,6 @@ hook.Add("PostDrawOpaqueRenderables", "sonic_driver_draw_effects", function()
     -- Check if the player is in a first-person view
     local wep = ply:GetActiveWeapon()
     if not ply:ShouldDrawLocalPlayer() and IsValid(wep) and wep:GetClass() == "sonic_driver" and wep:GetNW2Bool("repairing") then
-
         local vm = ply:GetViewModel()
 
         if IsValid(vm) then
@@ -124,14 +147,13 @@ hook.Add("PostDrawOpaqueRenderables", "sonic_driver_draw_effects", function()
             offset1:Rotate(ply:GetAngles())
 
             cam.Start3D()
-                render.SetMaterial(SPRITE_MATERIAL)
-                render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
+            render.SetMaterial(SPRITE_MATERIAL)
+            render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
             cam.End3D()
         end
     end
 
     for _, OtherPly in player.Iterator() do
-
         local index1 = OtherPly:EntIndex()
         local index2 = ply:EntIndex()
 
@@ -150,12 +172,12 @@ hook.Add("PostDrawOpaqueRenderables", "sonic_driver_draw_effects", function()
 
             local offset = bone_matrix:GetTranslation()
 
-            local offset1 = Vector(7.5, -1.5, -3.5)--Vector(7, 2.8, -1)
+            local offset1 = Vector(7.5, -1.5, -3.5) --Vector(7, 2.8, -1)
             offset1:Rotate(bone_matrix:GetAngles())
 
             cam.Start3D()
-                render.SetMaterial(SPRITE_MATERIAL)
-                render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
+            render.SetMaterial(SPRITE_MATERIAL)
+            render.DrawSprite(offset1 + offset, 10, 10, SPRITE_COLOUR)
             cam.End3D()
         end
     end

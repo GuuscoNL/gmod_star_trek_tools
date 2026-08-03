@@ -86,8 +86,31 @@ function SWEP:DrawWorldModel(flags)
     end
 end
 
+function SWEP:CleanupViewModel()
+    local owner = LocalPlayer()
+    if not IsValid(owner) then
+        return
+    end
+
+    local vm = owner:GetViewModel()
+    if not IsValid(vm) then
+        return
+    end
+
+    if istable(self.BoneManip) then
+        self:ResetBoneMod(vm)
+    end
+
+    if IsValid(self.CustomViewModelEntity) then
+        self.CustomViewModelEntity:Remove()
+    end
+    vm:SetMaterial("")
+end
+
 function SWEP:PostDrawViewModel(vm, weapon, ply)
     self.IsViewModelRendering = true
+
+    vm:SetMaterial("debug/debugvertexcolor")
 
     if isstring(self.CustomViewModel) then
         if not IsValid(self.CustomViewModelEntity) then

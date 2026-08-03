@@ -22,7 +22,7 @@ SWEP.AdminOnly = false
 SWEP.Slot = 2
 SWEP.SlotPos = 0
 
-SWEP.ViewModel = "models/weapons/v_pistol.mdl"
+SWEP.ViewModel = "models/weapons/c_pistol.mdl"
 SWEP.WorldModel = "models/crazycanadian/startrek/tools/dermal_regenerator.mdl"
 
 SWEP.HoldType = "pistol"
