@@ -22,33 +22,12 @@ SWEP.AdminOnly = false
 SWEP.Slot = 2
 SWEP.SlotPos = 0
 
-SWEP.ViewModel = "models/weapons/v_pistol.mdl"
+SWEP.ViewModel = "models/weapons/c_pistol.mdl"
 SWEP.WorldModel = "models/crazycanadian/startrek/tools/autosuture.mdl"
 
 SWEP.HoldType = "pistol"
 
 SWEP.BoneManip = {
-    ["ValveBiped.clip"] = {
-        Pos = Vector(-100, 0, 0),
-    },
-    ["ValveBiped.base"] = {
-        Pos = Vector(-100, 0, 0),
-    },
-    ["ValveBiped.square"] = {
-        Pos = Vector(-100, 0, 0),
-    },
-    ["ValveBiped.hammer"] = {
-        Pos = Vector(-100, 0, 0),
-    },
-    ["ValveBiped.Bip01_R_Finger01"] = {
-        Ang = Angle(-0, 0, 0)
-    },
-    ["ValveBiped.Bip01_R_Finger1"] = {
-        Ang = Angle(-20, -5, 30)
-    },
-    ["ValveBiped.Bip01_R_Finger11"] = {
-        Ang = Angle(0, -40, 0)
-    },
     ["ValveBiped.Bip01_R_Forearm"] = {
         Pos = Vector(-3, 1, 0),
     },
@@ -91,7 +70,7 @@ SWEP.BEAM_TEXTURE_STRETCH = 1
 SWEP.MIN_SPRITE_SIZE = 8
 SWEP.MAX_SPRITE_SIZE = 12
 
-SWEP.BEAM_FPS_START_OFFSET = Vector(-7.5, 4.5, 4.4)
+SWEP.BEAM_FPS_START_OFFSET = Vector(-7.5, 4.5, 4)
 SWEP.BEAM_FPS_ANGLE = Angle(-13, -8, 0)
 SWEP.BEAM_FPS_LENGTH = 39
 

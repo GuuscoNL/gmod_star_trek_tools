@@ -22,7 +22,7 @@ SWEP.AdminOnly = false
 SWEP.Slot = 2
 SWEP.SlotPos = 0
 
-SWEP.ViewModel = "models/weapons/v_pistol.mdl"
+SWEP.ViewModel = "models/weapons/c_pistol.mdl"
 SWEP.WorldModel = "models/crazycanadian/startrek/tools/laserscalpel.mdl"
 
 SWEP.HoldType = "revolver"
@@ -153,7 +153,6 @@ function SWEP:Think()
 
     if CLIENT then
         if self:GetNW2Bool("active") and self.DamageDelay <= 0 then
-
             local startPos, endPos
             if LocalPlayer():ShouldDrawLocalPlayer() then
                 startPos, endPos = StarTrekToolsBeamUtils:getBeamPosses3rd(owner, self)

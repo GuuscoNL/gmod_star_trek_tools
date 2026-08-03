@@ -22,30 +22,12 @@ SWEP.AdminOnly = false
 SWEP.Slot = 3
 SWEP.SlotPos = 0
 
-SWEP.ViewModel = "models/weapons/v_pistol.mdl"
+SWEP.ViewModel = "models/weapons/c_pistol.mdl"
 SWEP.WorldModel = "models/crazycanadian/startrek/tools/sonicdriver.mdl"
 
 SWEP.HoldType = "pistol"
 
 SWEP.BoneManip = {
-    ["ValveBiped.clip"] = {
-        Pos = Vector(-100, 0, 0),
-    },
-    ["ValveBiped.base"] = {
-        Pos = Vector(-100, 0, 0),
-    },
-    ["ValveBiped.square"] = {
-        Pos = Vector(-100, 0, 0),
-    },
-    ["ValveBiped.hammer"] = {
-        Pos = Vector(-100, 0, 0),
-    },
-    ["ValveBiped.Bip01_R_Finger01"] = {
-        Ang = Angle(-50, 0, 0)
-    },
-    ["ValveBiped.Bip01_R_Finger1"] = {
-        Ang = Angle(-20, -20, 0)
-    },
     ["ValveBiped.Bip01_R_Forearm"] = {
         Pos = Vector(-10, 0, 0),
     },
@@ -108,10 +90,8 @@ end
 
 function SWEP:Think()
     if SERVER then
-
         local owner = self:GetOwner()
         if self.active then
-
             local tr = util.TraceLine({
                 start = owner:GetShootPos(),
                 endpos = owner:GetShootPos() + owner:GetAimVector() * self.Range,
